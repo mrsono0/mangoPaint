@@ -1,0 +1,66 @@
+
+<MangoPaint>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgb: root.color_body_program
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    ActionBar:
+        id: action_bar
+        canvas:
+            Color:
+                rgb: root.color_action_bar
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ActionView:
+            id: action_view
+            ActionPrevious:
+                id: action_previous
+                app_icon: 'screens/resources/icons/logo.png'
+                title: root.title_previous
+                with_previous: False
+                on_release:
+                    root.events_callback('navigation_drawer')
+            ActionButton:
+                icon: 'screens/resources/icons/trans_empty.png'
+            ActionButton:
+                icon: 'screens/resources/icons/search.png'
+
+    Label:
+        id: custom_tabbed
+        text: root.tabbed_text
+        bold: True
+        size_hint: 1, .35
+        text_size: self.width - 40, None 
+        canvas.before:
+            Color:
+                rgb: root.color_tabbed_panel
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+    ScreenManage:
+        id: screen_manager
+        size_hint: 1, 8
+        Screen:
+            ScreenManager:
+                id: banner_manager
+                size_hint: 1, .38
+                post_hint: {'top': 1}
+            ScrollView:
+                effect_cls: StiffScrollEffect
+                size_hint_y: None
+                height: root.height // 1.8
+                pos_hint: {'top': .62}
+                GridLayout:
+                    id: shop_list
+                    cols: 1
+                    spacing: 5
+                    padding: 5
+                    size_hint_y: None
+                    height: self.minimum_height
+
