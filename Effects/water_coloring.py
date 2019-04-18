@@ -23,7 +23,6 @@ def gamma_brighten(content, width, height):
     print('width, height:', width, height)
     for nX in range(0, width):
         for nY in range(0,height):
-            print(nX, nY)
             nV = np.array(content.getpixel((nX, nY)))
             output = (((nV/255)**0.5) * 255).astype(int)
             brighten_img.putpixel((nX, nY), tuple(output))
@@ -33,7 +32,6 @@ def remove_noise(brighten_img, width, height):
     rem_img = Image.new('RGB', (width, height), 'white')
     for nX in range(1, width-1):
         for nY in range(1, height -1):
-            print(nX, nY)
             local_region = np.zeros((9, 3), dtype=np.int)
             count = 0
             for nX_O in range(-1, 2):
@@ -54,7 +52,6 @@ def sharpen(brighten_img, width, height):
     print('width, height:', width, height)
     for nX in range(1, width-1):
         for nY in range(1, height - 1):
-            print(nX, nY)
             nsum = np.zeros((3,), dtype=np.int)
             for nX_O in range(-1, 2):
                 for nY_O in range(-1, 2):
