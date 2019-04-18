@@ -8,7 +8,7 @@ import numpy as np
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument("--origin", type=str)
+parser.add_argument("--content", type=str)
 parser.add_argument('--output', type=str)
 parser.add_argument('--radius', type=int)
 parser.add_argument('--intensity', type=int)
@@ -17,14 +17,14 @@ args = parser.parse_args()
 
 
 def read_image(file_path):
-    origin = Image.open(file_path)
-    width, height = origin.size
-    return origin, width, height
+    content = Image.open(file_path)
+    width, height = content.size
+    return content, width, height
 
 
-def oil_painting(origin, radius, Intensity, width, height):
+def oil_painting(content, radius, Intensity, width, height):
     final_img = Image.new("RGB", (width, height), "white")
-    print('pixel:', origin.getpixel((0,0)))
+    print('pixel:', content.getpixel((0,0)))
     print('width, height:', width,height)
     for nX in range(radius, width - radius):
         for nY in range(radius, height - radius):
@@ -35,9 +35,9 @@ def oil_painting(origin, radius, Intensity, width, height):
             nIntensityCount = np.zeros((256, ), dtype=np.int)
             for nX_O in range((-1)*radius, radius+1):
                 for nY_O in range((-1)*radius, radius+1):
-                    nR = origin.getpixel((nX + nX_O, nY + nY_O))[0]
-                    nG = origin.getpixel((nX + nX_O, nY + nY_O))[1]
-                    nB = origin.getpixel((nX + nX_O, nY + nY_O))[2]
+                    nR = content.getpixel((nX + nX_O, nY + nY_O))[0]
+                    nG = content.getpixel((nX + nX_O, nY + nY_O))[1]
+                    nB = content.getpixel((nX + nX_O, nY + nY_O))[2]
                     CurIntensity = min(int((((nR+nG+nB)/3.)*Intensity)//255),255)
                     i = CurIntensity
                     nIntensityCount[i] += 1
@@ -55,5 +55,5 @@ def oil_painting(origin, radius, Intensity, width, height):
 
 
 if __name__ == '__main__':
-    origin, width, height = read_image(args.origin)
-    oil_painting(origin, args.radius, args.intensity, width, height)
+    content, width, height = read_image(args.content)
+    oil_painting(content, args.radius, args.intensity, width, height)
