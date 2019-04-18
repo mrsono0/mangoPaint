@@ -1,3 +1,5 @@
 logs/
 *.logs
 .buildozer
+tempCodeRunnerFile.py
+Effects/*.png
