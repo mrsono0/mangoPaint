@@ -12,6 +12,7 @@ parser.add_argument("--origin", type=str)
 parser.add_argument('--output', type=str)
 parser.add_argument('--radius', type=int)
 parser.add_argument('--intensity', type=int)
+parser.add_argument('--cuda', type=int)
 args = parser.parse_args()
 
 

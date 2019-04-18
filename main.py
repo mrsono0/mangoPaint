@@ -4,7 +4,7 @@
 
 from kivy.app import App
 
-from programs.mangopaint import MangoPaint
+from mangopaint import MangoPaint
 
 
 class MangoPaintApp(App):
