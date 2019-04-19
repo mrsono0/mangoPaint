@@ -3,3 +3,8 @@ logs/
 .buildozer
 tempCodeRunnerFile.py
 Effects/*.png
+Effects/fast_neural_style/scrip_20190401
+Effects/fast_neural_style/.idea/*.xml
+Effects/fast_neural_style/.idea/*.iml
+Effects/fast_neural_style/-home-ubuntu-codes-mangoPaint-mangoPaint-Effects-.txt
+Effects/fast_neural_style/__pycache__/*.pyc
