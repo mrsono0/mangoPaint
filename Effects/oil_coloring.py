@@ -1,6 +1,8 @@
 # coding: utf-8
 # python3.5.3
-# filter_oil_effect.py
+# oil_coloring.py
+# Reference: http://supercomputingblog.com/graphics/oil-painting-algorithm/
+
 
 from PIL import Image
 import numpy as np
@@ -22,10 +24,34 @@ def read_image(file_path):
     return content, width, height
 
 
+# Step 1
+# For each pixel, all pixels within the radius will have to be examined.
+# Pixels within the radius of the current pixel will be referred to as
+# sub-pixels.
+# For each sub-pixel, calculate the intensity, and determine which intensity
+# bin that intensity number falls into. Maintain a counter for each intensity
+# bin, which will count the number of sub-pixels which fall into each intensity
+# bin. Also maintain the total red, green, and blue values for each bin, later;
+# these may be used to determine the final value of the pixel.
+
+# Step 2
+# For each pixel, determine which intensity bin has the most number of pixels
+# in it.
+# Yes, this can be rolled into step 1, but for the purposes of this tutorial,
+# this way is simpler to understand the code.
+
+# Step 3
+# After we determine which intensity the pixel represents, as determined by
+# the intensity bin with the most pixels, we can then determine the final color
+# of the pixel by taking the total red, green, and blue values in that specific
+# bin, and dividing that by the total number of pixels in that specific
+# intensity bin.
+
+
 def oil_painting(content, radius, Intensity, width, height):
     final_img = Image.new("RGB", (width, height), "white")
-    print('pixel:', content.getpixel((0,0)))
-    print('width, height:', width,height)
+    print('pixel:', content.getpixel((0, 0)))
+    print('width, height:', width, height)
     for nX in range(radius, width - radius):
         for nY in range(radius, height - radius):
             # print('nX, nY: ', nX, nY)
@@ -38,7 +64,8 @@ def oil_painting(content, radius, Intensity, width, height):
                     nR = content.getpixel((nX + nX_O, nY + nY_O))[0]
                     nG = content.getpixel((nX + nX_O, nY + nY_O))[1]
                     nB = content.getpixel((nX + nX_O, nY + nY_O))[2]
-                    CurIntensity = min(int((((nR+nG+nB)/3.)*Intensity)//255),255)
+                    CurIntensity = \
+                        min(int((((nR+nG+nB)/3.)*Intensity)//255), 255)
                     i = CurIntensity
                     nIntensityCount[i] += 1
                     nSumR[i] += nR
