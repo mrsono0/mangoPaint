@@ -6,7 +6,7 @@ import os
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
-from pathlib import Path
+
 from kivy.properties import ObjectProperty, ListProperty, StringProperty
 
 # from Libs.uix.custombutton import CustomButton
@@ -30,7 +30,8 @@ class StartScreen(Screen):
     title_previous = StringProperty('')
     tabbed_text = StringProperty('')
 
-    Builder.load_file('{}/screens/start.kv'.format(Path(root).parent))
+    _root = os.path.abspath('.')
+    Builder.load_file('{}/Screens/startscreen.kv'.format(_root))
 
     def __init__(self, **kwargs):
         super(StartScreen, self).__init__(**kwargs)

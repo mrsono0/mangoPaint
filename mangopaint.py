@@ -15,12 +15,11 @@ from kivy.clock import Clock
 from kivy.properties import ObjectProperty, NumericProperty
 from kivy.utils import get_hex_from_color, get_color_from_hex
 
+from Programs.startscreen import StartScreen
 
-from Libs.uix.mainscreen import MainScreen
 from Libs.uix.mainmenu import MainMenuItem
 from Libs.uix.navigationmenu import NavigationMenu
 from Libs import settings as sets
-from Programs.startscreen import StartScreen
 
 from kivymd.navigationdrawer import NavigationDrawer
 
