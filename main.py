@@ -3,13 +3,11 @@
 # main.py
 
 from kivy.app import App
-
 from mangopaint import MangoPaint
 
 
 class MangoPaintApp(App):
     def build(self):
-        print("%%%%%%%%%%%%%%%%%%%%%%%")
         return MangoPaint()
 
 

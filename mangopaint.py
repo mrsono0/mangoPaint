@@ -3,12 +3,23 @@
 # Screen Manager P/G : Screen Controller
 
 import os
+from random import choice
 import traceback
 
 import kivy
+from kivy.app import App
+from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.config import Config
+from kivy.core.window import Window
+from kivy.clock import Clock
+from kivy.properties import ObjectProperty, NumericProperty
+from kivy.utils import get_hex_from_color, get_color_from_hex
 
-from kivy.uix.screenmanager import ScreenManager
 from programs.start import Start
+from Libs.uix.main_screen import MainScreen
+from Libs.uix.mainmenu import MainMenuItem
+from Libs.uix.actionmenu import ActionMenu
+from Libs import settings
 
 # from programs.gallery import Gallery
 # from programs.camera import Camera
@@ -19,7 +30,6 @@ from programs.start import Start
 # from programs.paint import Paint
 # from programs.purchase import Purchase
 
-from kivy.config import Config
 # from kivy.utils import platform
 
 kivy.require('1.10.1')
@@ -36,13 +46,22 @@ if platform == 'android':
     Config.set('graphics', 'resize', '0')
 
 
-class MangoPaint(ScreenManager):
-    print("++++++++++++++++++++")
+class MangoPaint(App):
+    main_screen = ObjectProperty(None)
+    screen = ObjectProperty(None)
+    window_text_size = NumericProperty(15)
 
     def __init__(self, **kwargs):
         super(MangoPaint, self).__init__(**kwargs)
-        print("**************************")
-        self.build()
+        Window.bind(on_keybord=self.events_function)
+
+        self.Screen = Screen
+        self.Clock = Clock
+        self.mainmenu = MainMenuItem
+        self.choice = choice
+        self.get_color_from_hex = get_color_from_hex
+        self.get_hex_from_color = get_hex_from_color
+        self.settings = settings
 
     def build(self):
         print("@@@@@@@@@@@@@@@@@@@@@@@")
