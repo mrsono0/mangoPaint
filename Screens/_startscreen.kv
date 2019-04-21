@@ -1,0 +1,42 @@
+#: kivy 1.10.0
+
+
+<StartScreen>:
+    name: 'StartScreen'
+    id: start
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # white
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        id: start_boxlayout
+
+        Label:
+            size_hint: (1, 1)
+            pos_hint: {"top": 0.3, "right": 0.3}
+
+        Image:
+            id: start_image
+            source: "/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg"
+            size_hint_x: 0.5
+            pos_hint: {"top": 0.7, "right": 0.75}
+            strech: True
+
+        Label:
+            text: "mango paint"
+            color: 0, 0, 0, 1  # black
+            font_size: 13
+            size_hint: (1, 0.2)
+            pos_hint: {"top": 0.3, "right": 1}
+            bold: True            
+
+        Label:
+            size_hint: (1, 1)
+            pos_hint: {"top": 0.3, "right": 0.3}
+        
+      
+
+

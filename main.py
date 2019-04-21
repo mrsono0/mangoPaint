@@ -8,7 +8,6 @@ import sys
 import traceback
 
 from kivy.config import Config
-from mangopaint import MangoPaint
 
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
@@ -17,11 +16,11 @@ Config.set('graphics', 'width', '350')
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', 0)
 
+from mangopaint import MangoPaint
+
 try:
-    # import kivy
-    # kivy.require('1.9.1')
-    # from Libs.bugreport import BugReport
-    pass
+    import kivy
+    kivy.require('1.9.1')
 except Exception:
     traceback.print_exc(file=open('{}/error.log'.format(directory), 'w'))
 
