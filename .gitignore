@@ -8,6 +8,5 @@ Effects/fast_neural_style/.idea/*.xml
 Effects/fast_neural_style/.idea/*.iml
 Effects/fast_neural_style/-home-ubuntu-codes-mangoPaint-mangoPaint-Effects-.txt
 Effects/fast_neural_style/__pycache__/*.pyc
-Libs/uix/*.pyc
 *.pyc
-mangopaint.pyc
+error.log

@@ -35,14 +35,14 @@ class StartScreen(Screen):
 
     def __init__(self, **kwargs):
         super(StartScreen, self).__init__(**kwargs)
-        self.ids.custom_tabbed.bind(on_ref_press=self.events_callback)
-        for name_shop in self.core.dict_shops.keys():
-            self.ids.shops_list.add_widget(
-                CustomButton(
-                    text=self.core.dict_shops[name_shop],
-                    icon='Data/Images/shops/{}.png'.format(name_shop),
-                    icon_people='Data/Images/people.png',
-                    icon_map='Data/Images/mapmarker.png',
-                    events_callback=self.events_callback,
-                )
-            )
+        # self.ids.custom_tabbed.bind(on_ref_press=self.events_callback)
+        # for name_shop in self.core.dict_shops.keys():
+        #     self.ids.shops_list.add_widget(
+        #         CustomButton(
+        #             text=self.core.dict_shops[name_shop],
+        #             icon='Data/Images/shops/{}.png'.format(name_shop),
+        #             icon_people='Data/Images/people.png',
+        #             icon_map='Data/Images/mapmarker.png',
+        #             events_callback=self.events_callback,
+        #         )
+        #     )
