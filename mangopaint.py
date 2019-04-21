@@ -6,7 +6,7 @@ import os
 from random import choice
 import traceback
 
-import kivy
+
 from kivy.app import App
 from kivy.uix.screenmanager import Screen, SlideTransition
 from kivy.config import ConfigParser
@@ -17,11 +17,10 @@ from kivy.utils import get_hex_from_color, get_color_from_hex
 
 from Programs.startscreen import StartScreen
 
-from Libs.uix.mainmenu import MainMenuItem
-from Libs.uix.navigationmenu import NavigationMenu
+# from Libs.uix.mainmenu import MainMenuItem
+# from Libs.uix.navigationmenu import NavigationMenu
 from Libs import settings as sets
-
-from kivymd.navigationdrawer import NavigationDrawer
+from Libs.uix.navigationdrawer import NavigationDrawer
 
 
 # from programs.gallery import Gallery
@@ -35,8 +34,6 @@ from kivymd.navigationdrawer import NavigationDrawer
 
 # from kivy.utils import platform
 
-kivy.require('1.10.1')
-__version__ = "0.0.1"
 
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
@@ -53,14 +50,14 @@ class MangoPaint(App):
 
         self.Screen = Screen
         self.Clock = Clock
-        self.mainmenu = MainMenuItem
-        self.choice = choice
-        self.get_color_from_hex = get_color_from_hex
-        self.get_hex_from_color = get_hex_from_color
-        self.sets = sets
-        self.name_program = settings.string_lang_title
-        self.navigation_drawer = NavigationDrawer(side_panel_width=230)
-        self.open_dialog = False
+        # self.mainmenu = MainMenuItem
+        # self.choice = choice
+        # self.get_color_from_hex = get_color_from_hex
+        # self.get_hex_from_color = get_hex_from_color
+        # self.sets = sets
+        # self.name_program = settings.string_lang_title
+        # self.navigation_drawer = NavigationDrawer(side_panel_width=230)
+        # self.open_dialog = False
 
     def build_config(self, config):
         config.adddefaultsection('General')
@@ -68,40 +65,42 @@ class MangoPaint(App):
         config.setdefault('General', 'theme', 'default')
 
     def build(self):
-        self.title = self.name_program
-        self.icon = 'Screens/resources/icons/logo.png'
-        self.use_kivy_sets = False
+        # self.title = self.name_program
+        # self.icon = 'Screens/resources/icons/logo.png'
+        # self.use_kivy_sets = False
 
-        self.config = ConfigParser()
-        self.config.read('{}/mangopaint.ini'.format(sets.prog_path))
-        self.set_var_from_file_settings()
+        # self.config = ConfigParser()
+        # self.config.read('{}/mangopaint.ini'.format(sets.prog_path))
+        # self.set_var_from_file_settings()
 
         self.start_screen = StartScreen(
-            color_action_bar=sets.color_action_bar,
-            color_body_program=sets.color_body_program,
-            color_tabbed_panel=sets.color_tabbed_panel,
-            tabbed_text=sets.string_lang_tabbed_menu.format(
-                TEXT_SHOPS=sets.string_lang_tabbed_menu_shops,
-                TEXT_LOCATIONS=sets.string_lang_tabbed_menu_locations,
-                COLOR_TEXT_SHOPS=get_hex_from_color(sets.color_action_bar),
-                COLOR_TEXT_LOCATIONS=sets.theme_text_color),
-            title_previous=self.name_program[1:],
+            # color_action_bar=sets.color_action_bar,
+            # color_body_program=sets.color_body_program,
+            # color_tabbed_panel=sets.color_tabbed_panel,
+            # tabbed_text=sets.string_lang_tabbed_menu.format(
+            #     TEXT_SHOPS=sets.string_lang_tabbed_menu_shops,
+            #     TEXT_LOCATIONS=sets.string_lang_tabbed_menu_locations,
+            #     COLOR_TEXT_SHOPS=get_hex_from_color(sets.color_action_bar),
+            #     COLOR_TEXT_LOCATIONS=sets.theme_text_color),
+            # title_previous=self.name_program[1:],
             events_callback=self.events_program, sets=sets
         )
 
-        self.screen = self.start_screen
-        navigation_Panel = NavigationMenu(
-            events_callback=self.events_program,
-            items=sets.dict_navigation_items
-        )
+        # self.screen = self.start_screen
+        # navigation_Panel = NavigationMenu(
+        #     events_callback=self.events_program,
+        #     items=sets.dict_navigation_items
+        # )
 
-        Clock.schedule_interval(self.show_banners, 2)
+        # Clock.schedule_interval(self.show_banners, 2)
 
-        self.navigation_drawer.add_widget(navigation_panel)
-        self.navigation_drawer.anim_type = 'slide_above_anim'
-        self.navigation_drawer.add_widget(self.start_screen)
+        # self.navigation_drawer.add_widget(navigation_panel)
+        # self.navigation_drawer.anim_type = 'slide_above_anim'
+        # self.navigation_drawer.add_widget(self.start_screen)
 
-        return self.navigation_drawer
+        # return self.navigation_drawer
+
+        # return self.screen
 
 
     def set_var_from_file_settings(self):
@@ -196,9 +195,9 @@ class MangoPaint(App):
         self.screen.ids.screen_manager.current = \
             self.screen.ids.screen_manager.screen_name[-1]
 
-        self.set_current_item_tabbed_panel(
-            sets.theme_key_text_color, get_hex_from_color(sets.color_action_bar)
-        )
+        # self.set_current_item_tabbed_panel(
+        #     sets.theme_key_text_color, get_hex_from_color(sets.color_action_bar)
+        # )
 
     def on_pause(self):
         return True
