@@ -7,7 +7,6 @@ import os
 import sys
 import traceback
 
-from kivy.app import App
 from kivy.config import Config
 from mangopaint import MangoPaint
 
