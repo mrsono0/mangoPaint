@@ -10,4 +10,6 @@ Effects/fast_neural_style/__pycache__/*.pyc
 *.pyc
 error.log
 mangopaint.pyc
-.vscode/settings.json
+.vscode/
+settings.json
+launch.json

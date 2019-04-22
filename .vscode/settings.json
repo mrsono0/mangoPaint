@@ -1,8 +1,0 @@
-{
-    "python.pythonPath": "/Users/jarvis/.pyenv/versions/mangoPaint/bin/python3",
-    "code-runner.cwd": "/Users/jarvis/codes/mangoPaint/mangoPaint",
-    "code-runner.clearPreviousOutput": true,
-    "python.linting.flake8Enabled": true,
-    "code-runner.ignoreSelection": true,
-    "python.terminal.activateEnvironment": false,
-}
