@@ -1,10 +1,12 @@
 # mangopaint.py
 # python3.5.3,   coding: utf-8
-# Screen Manager P/G : Screen Controller
+# Screen Manager P/G :  Controller
 
 import os
 from random import choice
-import traceback
+
+
+# import traceback
 
 
 from kivy.app import App
@@ -17,20 +19,24 @@ from kivy.utils import get_hex_from_color, get_color_from_hex
 
 from Programs.startscreen import StartScreen
 
+# from kivymd.theming import ThemeManager
+
 # from Libs.uix.mainmenu import MainMenuItem
 # from Libs.uix.navigationmenu import NavigationMenu
 from Libs import settings as sets
-from Libs.uix.navigationdrawer import NavigationDrawer
+# from Libs.uix.navigationdrawer import NavigationDrawer
+
+# from Libs.bugreport import BugReport
 
 
-# from programs.gallery import Gallery
-# from programs.camera import Camera
-# from programs.settings import Settings
-# from programs.filter import Filter
-# from programs.segment import Segment
-# from programs.mystuio import MyStudio
-# from programs.paint import Paint
-# from programs.purchase import Purchase
+# from Programs.gallery import Gallery
+# from Programs.camera import Camera
+# from Programs.settings import Settings
+# from Programs.filter import Filter
+# from Programs.segment import Segment
+# from Programs.mystuio import MyStudio
+# from Programs.paint import Paint
+# from Programs.purchase import Purchase
 
 # from kivy.utils import platform
 
@@ -40,9 +46,15 @@ root = root if root != '' else os.getcwd()
 
 
 class MangoPaint(App):
+
     main_screen = ObjectProperty(None)
     screen = ObjectProperty(None)
     window_text_size = NumericProperty(15)
+
+    # theme_cls = ThemeManager()
+    # theme_cls.primary_palette = 'Blue'
+    # title = 'Mango Paint'
+
 
     def __init__(self, **kwargs):
         super(MangoPaint, self).__init__(**kwargs)
@@ -51,11 +63,11 @@ class MangoPaint(App):
         self.Screen = Screen
         self.Clock = Clock
         # self.mainmenu = MainMenuItem
-        # self.choice = choice
-        # self.get_color_from_hex = get_color_from_hex
-        # self.get_hex_from_color = get_hex_from_color
-        # self.sets = sets
-        # self.name_program = settings.string_lang_title
+        self.choice = choice
+        self.get_color_from_hex = get_color_from_hex
+        self.get_hex_from_color = get_hex_from_color
+        self.sets = sets
+        # self.name_program = sets.string_lang_title
         # self.navigation_drawer = NavigationDrawer(side_panel_width=230)
         # self.open_dialog = False
 
@@ -77,16 +89,11 @@ class MangoPaint(App):
             # color_action_bar=sets.color_action_bar,
             # color_body_program=sets.color_body_program,
             # color_tabbed_panel=sets.color_tabbed_panel,
-            # tabbed_text=sets.string_lang_tabbed_menu.format(
-            #     TEXT_SHOPS=sets.string_lang_tabbed_menu_shops,
-            #     TEXT_LOCATIONS=sets.string_lang_tabbed_menu_locations,
-            #     COLOR_TEXT_SHOPS=get_hex_from_color(sets.color_action_bar),
-            #     COLOR_TEXT_LOCATIONS=sets.theme_text_color),
             # title_previous=self.name_program[1:],
             events_callback=self.events_program, sets=sets
         )
 
-        # self.screen = self.start_screen
+        self.screen = self.start_screen
         # navigation_Panel = NavigationMenu(
         #     events_callback=self.events_program,
         #     items=sets.dict_navigation_items
@@ -100,7 +107,6 @@ class MangoPaint(App):
 
         # return self.navigation_drawer
 
-        # return self.screen
 
 
     def set_var_from_file_settings(self):

@@ -1,4 +1,13 @@
-#:import MDToolbar kivymd.toolbar.MDToolbar
+import os
+
+from kivy.app import App
+from kivy.lang import Builder
+
+from kivymd.theming import ThemeManager
+from kivymd.utils.cropimage import crop_image
+
+kv = """
+#:import Toolbar kivymd.toolbar.MDToolbar
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 #:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
@@ -12,10 +21,10 @@ BoxLayout:
     orientation: 'vertical'
 
     MDToolbar:
-        title: self.title
+        title: app.title
         elevation: 10
         left_action_items: [['menu', lambda x: x]]
-        #md_bg_color: self.theme_cls.primary_color
+        md_bg_color: app.theme_cls.primary_color
 
     ScreenManager:
         id: manager
@@ -31,20 +40,13 @@ BoxLayout:
         Screen:
             name: 'two'
             on_enter:
-                self.crop_image_for_tile(tile_1, tile_1.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_2, tile_2.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_3, tile_3.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_4, tile_4.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_5, tile_5.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_6, tile_6.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_7, tile_7.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_1, tile_1.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_2, tile_2.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_3, tile_3.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_4, tile_4.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_5, tile_5.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_6, tile_6.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_7, tile_7.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
 
             ScrollView:
                 do_scroll_x: False
@@ -87,3 +89,26 @@ BoxLayout:
                         id: tile_7
                         text:
                             "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
+"""
+
+
+class MyApp(App):
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Blue'
+    title = 'Example Smart Tile'
+    md_app_bar = None
+
+    def build(self):
+        root = Builder.load_string(kv)
+        return root
+
+    def crop_image_for_tile(self, instance, size, path_to_crop_image):
+        if not os.path.exists(
+                os.path.join(self.directory, path_to_crop_image)):
+            size = (int(size[0]), int(size[1]))
+            path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
+            crop_image(size, path_to_origin_image, path_to_crop_image)
+        instance.source = path_to_crop_image
+
+
+MyApp().run()
