@@ -4,7 +4,5 @@
     "code-runner.clearPreviousOutput": true,
     "python.linting.flake8Enabled": true,
     "code-runner.ignoreSelection": true,
-    "kvlang.pythonPath": "python3",
     "python.terminal.activateEnvironment": false,
-    "code-runner.executorMap.python": "python3 -u"
 }
