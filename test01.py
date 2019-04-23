@@ -40,13 +40,13 @@ BoxLayout:
         Screen:
             name: 'two'
             on_enter:
-                app.crop_image_for_tile(tile_1, tile_1.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_2, tile_2.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_3, tile_3.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_4, tile_4.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_5, tile_5.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_6, tile_6.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                app.crop_image_for_tile(tile_7, tile_7.size, '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_1, tile_1.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_2, tile_2.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_3, tile_3.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_4, tile_4.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_5, tile_5.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_6, tile_6.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                app.crop_image_for_tile(tile_7, tile_7.size, '/Users/jarvis/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
 
             ScrollView:
                 do_scroll_x: False

@@ -6,15 +6,8 @@
 import os
 import sys
 import traceback
+# from kivy.utils import platform
 
-from kivy.config import Config
-
-directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
-
-Config.set('kivy', 'keyboard_mode', 'system')
-Config.set('graphics', 'width', '350')
-Config.set('graphics', 'height', '600')
-Config.set('graphics', 'resizable', 0)
 
 from mangopaint import MangoPaint
 
@@ -22,6 +15,7 @@ try:
     import kivy
     kivy.require('1.9.1')
 except Exception:
+    directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
     traceback.print_exc(file=open('{}/error.log'.format(directory), 'w'))
 
 

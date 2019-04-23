@@ -4,133 +4,102 @@
 
 import os
 from random import choice
-
-
-# import traceback
-
+import traceback
 
 from kivy.app import App
-from kivy.uix.screenmanager import Screen, SlideTransition
+from kivy.uix.screenmanager import Screen
+from kivy.config import Config
 from kivy.config import ConfigParser
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty, NumericProperty
-from kivy.utils import get_hex_from_color, get_color_from_hex
 
 from Programs.startscreen import StartScreen
 
-# from kivymd.theming import ThemeManager
+from kivymd.theming import ThemeManager
 
-# from Libs.uix.mainmenu import MainMenuItem
-# from Libs.uix.navigationmenu import NavigationMenu
 from Libs import settings as sets
-# from Libs.uix.navigationdrawer import NavigationDrawer
+from Libs.bugreport import BugReport
 
-# from Libs.bugreport import BugReport
+# from Programs.mainscreen import MainScreen: MainScreen
+# from Programs.camera import Camera: MainScreen.Camera
+# from Programs.bottom import Buttom: ManinScreen.Buttom
 
+# from Programs.choice import Choice: Choice
+# from Programs.filter import Filter: CHoice.filter
 
-# from Programs.gallery import Gallery
-# from Programs.camera import Camera
-# from Programs.settings import Settings
-# from Programs.filter import Filter
-# from Programs.segment import Segment
-# from Programs.mystuio import MyStudio
-# from Programs.paint import Paint
-# from Programs.purchase import Purchase
+# from Programs.settings import Settings: Settings
 
-# from kivy.utils import platform
+# from Programs.segment import Segment: Segment
 
+# from Programs.mystuio import MyStudio: MyStudio
+# from Programs.paint import Paint: Paint
+# from Programs.purchase import Purchase: Purchase
 
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
 
+Config.set('kivy', 'keyboard_mode', 'system')
+Config.set('graphics', 'width', '350')
+Config.set('graphics', 'height', '600')
+Config.set('graphics', 'resizable', 0)
+
 
 class MangoPaint(App):
 
-    main_screen = ObjectProperty(None)
+# import시  메모리 할당 및 초기값 넣어주는 섹션
+    mainscreen = ObjectProperty(None)
     screen = ObjectProperty(None)
-    window_text_size = NumericProperty(15)
 
-    # theme_cls = ThemeManager()
-    # theme_cls.primary_palette = 'Blue'
-    # title = 'Mango Paint'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Blue'
+    title = 'Mango Paint'
 
-
+# 해당 클래스가 객체화될때 구동되는 섹션으로 관련된 컴포넌트들을 활성화시켜서 실제 running 되기 직전까지 만들어놓음.
     def __init__(self, **kwargs):
         super(MangoPaint, self).__init__(**kwargs)
         Window.bind(on_keybord=self.events_program)
 
         self.Screen = Screen
         self.Clock = Clock
-        # self.mainmenu = MainMenuItem
         self.choice = choice
-        self.get_color_from_hex = get_color_from_hex
-        self.get_hex_from_color = get_hex_from_color
         self.sets = sets
-        # self.name_program = sets.string_lang_title
-        # self.navigation_drawer = NavigationDrawer(side_panel_width=230)
-        # self.open_dialog = False
+        self.name_program = sets.string_lang_title
 
     def build_config(self, config):
         config.adddefaultsection('General')
         config.setdefault('General', 'language', 'Korean')
         config.setdefault('General', 'theme', 'default')
 
+# build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
+# 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):
-        # self.title = self.name_program
-        # self.icon = 'Screens/resources/icons/logo.png'
-        # self.use_kivy_sets = False
 
-        # self.config = ConfigParser()
-        # self.config.read('{}/mangopaint.ini'.format(sets.prog_path))
-        # self.set_var_from_file_settings()
+        self.title = self.name_program
+        self.icon = 'Screens/resources/icons/logo.png'
+        self.use_kivy_sets = False
 
         self.start_screen = StartScreen(
-            # color_action_bar=sets.color_action_bar,
-            # color_body_program=sets.color_body_program,
-            # color_tabbed_panel=sets.color_tabbed_panel,
-            # title_previous=self.name_program[1:],
-            events_callback=self.events_program, sets=sets
+            # title_previous=self.name_program,
+            # events_callback=self.events_program,
+            # sets=sets
+            title_previous='alskdjflsdkafjdlskj',
+            events_callback=self.events_program,
+            sets=sets,
         )
 
         self.screen = self.start_screen
-        # navigation_Panel = NavigationMenu(
-        #     events_callback=self.events_program,
-        #     items=sets.dict_navigation_items
-        # )
+        Clock.schedule_interval(self.show_banners, 2)
 
-        # Clock.schedule_interval(self.show_banners, 2)
-
-        # self.navigation_drawer.add_widget(navigation_panel)
-        # self.navigation_drawer.anim_type = 'slide_above_anim'
-        # self.navigation_drawer.add_widget(self.start_screen)
-
-        # return self.navigation_drawer
-
-
-
-    def set_var_from_file_settings(self):
-        self.language = sets.select_locale[
-            self.config.get('General', 'language')
-        ]
-
-
-    def set_current_item_tabbed_panel(self, color_current_tab, color_tab):
-        self.screen.ids.custom_tabbed.text = \
-            sets.string_lang_tabbed_menu.format(
-                TEXT_SHOPS=core.string_lang_tabbed_menu_shops,
-                TEXT_LOCATIONS=core.string_lang_tabbed_menu_locations,
-                COLOR_TEXT_SHOPS=color_tab,
-                COLOR_TEXT_LOCATIONS=color_current_tab
-            )
-
-
+        return self.screen
+ 
+# 분기 프로그램 with events_callback로 함수를 파라미터로 전달하여 구동
+# 연계할 프로그램명을 호출하고 연이어 프로그램명.kv 까지 동작시킬 터널을 뚫은 후,
+# kv파일의 on-이벤트의 events_callback에 파리미터로 전달할 프로그램명을 기술하여
+# 최종 원하는 프로그램을 기동할수 있도록 하는 패턴함수임.
     def events_program(self, *args):
+
         print(args)
-
-        if self.navigation_drawer.state == 'open':
-            self.navigation_drawer.anim_to_state('closed')
-
         if len(args) == 2:
             event = args[1]
         else:
@@ -143,20 +112,13 @@ class MangoPaint(App):
 
         if event == sets.string_lang_settings:
             pass
-        elif evnet == sets.string_lang_exit_key:
+        elif event == sets.string_lang_exit_key:
             self.exit_program()
-        elif event == sets.string_lang_license:
-            self.show_license()
-        elif event == 'navigation_drawer':
+        elif event == 'navigation drawer':
             self.navigation_drawer.toggle_state()
-        elif event == sets.string_lang_tabbed_menu_locations:
-            self.show_location()
-        elif event == sets.string_lang_tabbed_menu_shops:
-            self.back_screen()
-
-
-
-
+        elif event in (1001, 27):
+            self.back_screen(event)
+        return True
 
     def exit_program(self, *args):
 
@@ -182,13 +144,6 @@ class MangoPaint(App):
             self.open_dialog = True            
 
 
-    def show_license(self):
-        pass
-
-
-    def show_location(self):
-        pass
-
     def back_screen(self, event):
         if self.screen.ids.screenmanager.current == '':
             if event in (1001, 27):
@@ -201,9 +156,6 @@ class MangoPaint(App):
         self.screen.ids.screen_manager.current = \
             self.screen.ids.screen_manager.screen_name[-1]
 
-        # self.set_current_item_tabbed_panel(
-        #     sets.theme_key_text_color, get_hex_from_color(sets.color_action_bar)
-        # )
 
     def on_pause(self):
         return True
