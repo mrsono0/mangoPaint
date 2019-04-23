@@ -9,118 +9,122 @@
     font_style: 'Subhead'
 
 
-<BoxLayout>:
-    orientation: 'vertical'
+<StartScreen>:
+    BoxLayout:
+        orientation: 'vertical'
 
-    MDToolbar:
-        title: self.title
-        elevation: 0
-        left_action_items: [['menu', lambda x: x]]
-        md_bg_color: 'blue'
-        on_release: root.events_callback('choice_one')
+        MDToolbar:
+            title: self.title
+            elevation: 0
+            left_action_items: [['menu', lambda x: x]]
+            md_bg_color: 'blue'
+            on_release: root.events_callback('choice_one')
 
-    ScreenManager:
-        id: manager
+        ScreenManager:
+            id: manager
 
-        Screen:
-            name: 'two'
-            on_enter:
-                self.crop_image_for_tile(tile_1, tile_1.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_2, tile_2.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_3, tile_3.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_4, tile_4.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_5, tile_5.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_6, tile_6.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                self.crop_image_for_tile(tile_7, tile_7.size, \
-                '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+            Screen:
+                name: 'thumbnail'
+                on_enter:
+                    self.crop_image_for_tile(tile_1, tile_1.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_2, tile_2.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_3, tile_3.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_4, tile_4.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_5, tile_5.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_6, tile_6.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+                    self.crop_image_for_tile(tile_7, tile_7.size, \
+                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
 
-            ScrollView:
-                do_scroll_x: False
+                ScrollView:
+                    do_scroll_x: False
 
-                GridLayout:
-                    cols: 2
-                    row_default_height:
-                        (self.width - self.cols*self.spacing[0])/self.cols
-                    row_force_default: True
-                    size_hint_y: None
-                    height: self.minimum_height
-                    padding: dp(4), dp(4)
-                    spacing: dp(4)
+                    GridLayout:
+                        cols: 2
+                        row_default_height:
+                            (self.width - self.cols*self.spacing[0])/self.cols
+                        row_force_default: True
+                        size_hint_y: None
+                        height: self.minimum_height
+                        padding: dp(4), dp(4)
+                        spacing: dp(4)
 
-                    SmartTileWithStar:
-                        id: tile_2
-                        mipmap: True
-                        stars: 3
-                    SmartTileWithStar:
-                        id: tile_3
-                        mipmap: True
-                        stars: 3
-                    SmartTileWithLabel:
-                        id: tile_1
-                        text:
-                            "Beautiful\\n[size=12]beautiful-931152_1280.jpg[/size]"
-                    SmartTileWithLabel:
-                        id: tile_4
-                        text:
-                            "Robin\\n[size=12]robin-944887_1280.jpg[/size]"
-                    SmartTileWithLabel:
-                        id: tile_5
-                        text:
-                            "Kitten\\n[size=12]kitten-1049129_1280.jpg[/size]"
-                    SmartTileWithLabel:
-                        id: tile_6
-                        text:
-                            "Light-Bulb\\n[size=12]light-bulb-1042480_1280.jpg[/size]"
-                    SmartTileWithLabel:
-                        id: tile_7
-                        text:
-                            "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
+                        SmartTileWithStar:
+                            id: tile_2
+                            mipmap: True
+                            stars: 3
+                        SmartTileWithStar:
+                            id: tile_3
+                            mipmap: True
+                            stars: 3
+                        SmartTileWithLabel:
+                            id: tile_1
+                            text:
+                                "Beautiful\\n[size=12]beautiful-931152_1280.jpg[/size]"
+                        SmartTileWithLabel:
+                            id: tile_4
+                            text:
+                                "Robin\\n[size=12]robin-944887_1280.jpg[/size]"
+                        SmartTileWithLabel:
+                            id: tile_5
+                            text:
+                                "Kitten\\n[size=12]kitten-1049129_1280.jpg[/size]"
+                        SmartTileWithLabel:
+                            id: tile_6
+                            text:
+                                "Light-Bulb\\n[size=12]light-bulb-1042480_1280.jpg[/size]"
+                        SmartTileWithLabel:
+                            id: tile_7
+                            text:
+                                "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
 
-        MDBottomNavigation:
+            Screen:
+                name: 'buttom_navi'
+                on_enter:            
+                MDBottomNavigation:
 
-            MDBottomNavigationItem:
-                name: 'home'
-                text: 'Home'
-                icon: "home"
-                MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: "Movie"
-                    halign: 'center'
-                    on_release: root.events_callback('back_screen')
+                    MDBottomNavigationItem:
+                        name: 'home'
+                        text: 'Home'
+                        icon: "home"
+                        MDLabel:
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: "Movie"
+                            halign: 'center'
+                            on_release: root.events_callback('back_screen')
 
-            MDBottomNavigationItem:
-                name: 'mystudio'
-                text: "MyStudio"
-                icon: "mystudio"
-                MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: "MyStudio"
-                    halign: 'center'
+                    MDBottomNavigationItem:
+                        name: 'mystudio'
+                        text: "MyStudio"
+                        icon: "mystudio"
+                        MDLabel:
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: "MyStudio"
+                            halign: 'center'
 
-            MDBottomNavigationItem:
-                name: 'android'
-                text: "Android"
-                icon: "android"
-                MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: "Android"
-                    halign: 'center'
+                    MDBottomNavigationItem:
+                        name: 'android'
+                        text: "Android"
+                        icon: "android"
+                        MDLabel:
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: "Android"
+                            halign: 'center'
 
-            MDBottomNavigationItem:
-                name: 'purchase'
-                text: "Purchase"
-                icon: 'purchase'
-                MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: "Purchase"
-                    halign: 'center'
+                    MDBottomNavigationItem:
+                        name: 'purchase'
+                        text: "Purchase"
+                        icon: 'purchase'
+                        MDLabel:
+                            font_style: 'Body1'
+                            theme_text_color: 'Primary'
+                            text: "Purchase"
+                            halign: 'center'

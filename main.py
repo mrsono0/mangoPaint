@@ -21,7 +21,7 @@ except Exception:
 
 __version__ = "0.0.1"
 
-
+# return 은 mangopaint.py 에서.
 class main():
     app = None
     app = MangoPaint()

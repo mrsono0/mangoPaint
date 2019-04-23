@@ -3,6 +3,7 @@
 # Screen Manager P/G :  Controller
 
 import os
+import sys
 from random import choice
 import traceback
 
@@ -12,7 +13,7 @@ from kivy.config import Config
 from kivy.config import ConfigParser
 from kivy.core.window import Window
 from kivy.clock import Clock
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import ObjectProperty
 
 from Programs.startscreen import StartScreen
 
@@ -76,16 +77,15 @@ class MangoPaint(App):
     def build(self):
 
         self.title = self.name_program
-        self.icon = 'Screens/resources/icons/logo.png'
+        self.icon = 'Screens/resources/imgs/mango.jpg'
         self.use_kivy_sets = False
 
+# calling 과  called 함수의 파라미터 인자와 초기화까지 일치해야함. 아니면  
+# 'typeerror object() takes no parameters' 
         self.start_screen = StartScreen(
             # title_previous=self.name_program,
-            # events_callback=self.events_program,
-            # sets=sets
-            title_previous='alskdjflsdkafjdlskj',
             events_callback=self.events_program,
-            sets=sets,
+            sets=self.sets
         )
 
         self.screen = self.start_screen
@@ -110,12 +110,8 @@ class MangoPaint(App):
             except AttributeError:
                 event = args[1]
 
-        if event == sets.string_lang_settings:
-            pass
-        elif event == sets.string_lang_exit_key:
+        if event == sets.string_lang_exit_key:
             self.exit_program()
-        elif event == 'navigation drawer':
-            self.navigation_drawer.toggle_state()
         elif event in (1001, 27):
             self.back_screen(event)
         return True
