@@ -5,22 +5,23 @@
 import os
 import sys
 from random import choice
-import traceback
+# import traceback
 
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.config import Config
-from kivy.config import ConfigParser
+# from kivy.config import ConfigParser
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
+# from kivy.utils import platform
 
 from Programs.startscreen import StartScreen
 
 from kivymd.theming import ThemeManager
 
 from Libs import settings as sets
-from Libs.bugreport import BugReport
+# from Libs.bugreport import BugReport
 
 # from Programs.mainscreen import MainScreen: MainScreen
 # from Programs.camera import Camera: MainScreen.Camera
@@ -48,7 +49,7 @@ Config.set('graphics', 'resizable', 0)
 
 class MangoPaint(App):
 
-# import시  메모리 할당 및 초기값 넣어주는 섹션
+    # import시  메모리 할당 및 초기값 넣어주는 섹션
     mainscreen = ObjectProperty(None)
     screen = ObjectProperty(None)
 
@@ -89,7 +90,7 @@ class MangoPaint(App):
         )
 
         self.screen = self.start_screen
-        Clock.schedule_interval(self.show_banners, 2)
+        # Clock.schedule_interval(self.show_banners, 2)
 
         return self.screen
  
@@ -109,7 +110,6 @@ class MangoPaint(App):
                     isinstance(_args, dict) else _args.id
             except AttributeError:
                 event = args[1]
-
         if event == sets.string_lang_exit_key:
             self.exit_program()
         elif event in (1001, 27):
@@ -138,7 +138,6 @@ class MangoPaint(App):
                 auto_dismiss=True
             )
             self.open_dialog = True            
-
 
     def back_screen(self, event):
         if self.screen.ids.screenmanager.current == '':

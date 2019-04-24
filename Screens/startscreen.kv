@@ -17,8 +17,8 @@
             title: self.title
             elevation: 0
             left_action_items: [['menu', lambda x: x]]
-            md_bg_color: 'blue'
-            on_release: root.events_callback('choice_one')
+            md_bg_color: 1,1,1,1
+            on_touch_down: root.events_callback('choice_one')
 
         ScreenManager:
             id: manager
@@ -90,41 +90,33 @@
 
                     MDBottomNavigationItem:
                         name: 'home'
-                        text: 'Home'
+                        text: "Home"
                         icon: "home"
                         MDLabel:
                             font_style: 'Body1'
                             theme_text_color: 'Primary'
                             text: "Movie"
                             halign: 'center'
-                            on_release: root.events_callback('back_screen')
+                            on_touch_down: root.events_callback('back_screen')
 
                     MDBottomNavigationItem:
                         name: 'mystudio'
                         text: "MyStudio"
-                        icon: "mystudio"
+                        icon: "home"
                         MDLabel:
                             font_style: 'Body1'
                             theme_text_color: 'Primary'
-                            text: "MyStudio"
+                            text: "camera"
                             halign: 'center'
-
-                    MDBottomNavigationItem:
-                        name: 'android'
-                        text: "Android"
-                        icon: "android"
-                        MDLabel:
-                            font_style: 'Body1'
-                            theme_text_color: 'Primary'
-                            text: "Android"
-                            halign: 'center'
+                            on_touch_down: root.events_callback('back_screen')
 
                     MDBottomNavigationItem:
                         name: 'purchase'
                         text: "Purchase"
-                        icon: 'purchase'
+                        icon: "basket"
                         MDLabel:
                             font_style: 'Body1'
                             theme_text_color: 'Primary'
                             text: "Purchase"
                             halign: 'center'
+                            on_touch_down: root.events_callback('back_screen')

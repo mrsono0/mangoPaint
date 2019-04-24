@@ -6,8 +6,6 @@
 import os
 import sys
 import traceback
-# from kivy.utils import platform
-
 
 from mangopaint import MangoPaint
 
@@ -20,6 +18,7 @@ except Exception:
 
 
 __version__ = "0.0.1"
+
 
 # return 은 mangopaint.py 에서.
 class main():

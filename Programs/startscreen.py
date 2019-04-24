@@ -12,6 +12,10 @@ from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.utils.cropimage import crop_image
 from kivy.uix.gridlayout import GridLayout
+# from kivymd.toolbar import MDToolbar
+# MDToolbar.on_touch_down
+# from kivymd.tabs import MDBottomNavigation
+# MDBottomNavigation.
 
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
