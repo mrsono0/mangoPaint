@@ -27,10 +27,10 @@ string_lang_title = 'mangopaint'
 string_lang_exit_key = 'exit'
 string_lang_yes = True
 
-dict_language = {
-    string_lang_on_korean: "korean",
-    string_lang_on_english: "english",
-}
+# dict_language = {
+#     string_lang_on_korean: "korean",
+#     string_lang_on_english: "english",
+# }
 
 
 decorator = 'Screens/resources/imgs/decorator.png'

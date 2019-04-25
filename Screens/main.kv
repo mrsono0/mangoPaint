@@ -1,24 +1,33 @@
 #:import MDToolbar kivymd.toolbar.MDToolbar
+#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 #:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import ThemeManager kivymd.theming.ThemeManager
+#:import MDTextField kivymd.textfields.MDTextField
+
+BoxLayout:
+    id: mango_paint
 
 
-<MySmartTileWithLabel@SmartTileWithLabel>:
-    mipmap: True
-    font_style: 'Subhead'
-
-
-<StartScreen>:
     BoxLayout:
+        id: boxlayout_body
         orientation: 'vertical'
 
         MDToolbar:
-            title: self.title
-            elevation: 0
-            left_action_items: [['menu', lambda x: x]]
-            md_bg_color: 1,1,1,1
+            id: toolbar
+            title: app.title
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            background_hue: '500'
+            elevation: 10
+            left_action_items:
+                [['menu', lambda x: app.root.toggle_nav_drawer()]]
+            right_action_items:
+                [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
             on_touch_down: root.events_callback('choice_one')
+
+
 
         ScreenManager:
             id: manager
@@ -86,15 +95,19 @@
         MDBottomNavigation:
 
             MDBottomNavigationItem:
-                name: 'home'
-                text: "Home"
+                name: 'gallery'
+                text: "gallery"
                 icon: "home"
-                MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: "Movie"
-                    halign: 'center'
-                    on_touch_down: root.events_callback('back_screen')
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    padding: dp(48)
+                    spacing: dp(10)
+                    MDTextField:
+                        hint_text: "You can put any widgets here"
+                        helper_text: "Hello :)"
+                        helper_text_mode: "on_focus"                
+
 
             MDBottomNavigationItem:
                 name: 'mystudio'
@@ -105,7 +118,11 @@
                     theme_text_color: 'Primary'
                     text: "camera"
                     halign: 'center'
-                    on_touch_down: root.events_callback('back_screen')
+                    # on_release: root.events_callback('show_mystudio')
+                    on_release:
+                        # app.set_menu_for_demo_apps()
+                        # app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
+                        # app.instance_menu_demo_apps.open(self)                    
 
             MDBottomNavigationItem:
                 name: 'purchase'
@@ -116,4 +133,4 @@
                     theme_text_color: 'Primary'
                     text: "Purchase"
                     halign: 'center'
-                    on_touch_down: root.events_callback('back_screen')
+                    on_touch_down: root.events_callback('show_purchase')
