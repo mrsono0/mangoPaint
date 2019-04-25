@@ -30,7 +30,8 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.icon_definitions import md_icons
 # from kivymd.material_resources import DEVICE_TYPE
 
-from Programs.gallery import Gallery
+from Programs.controller import Controller
+from Libs import settings as sets
 
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
@@ -55,7 +56,7 @@ def toast(text):
     toast(text)
 
 
-class MangoPaint(App):
+class MangoPaint(App, Controller):
 
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'BlueGray'
@@ -63,6 +64,9 @@ class MangoPaint(App):
     title = "MangoPaint"
     theme_cls.theme_style = 'Dark'
     main_widget = None
+    events_callback = ObjectProperty(None)
+    sets = ObjectProperty(None)
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -109,7 +113,9 @@ class MangoPaint(App):
         self.demo_apps_list = [
             'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
-        Window.bind(on_keyboard=self.events)
+        Window.bind(on_keyboard=self.events_program)
+        events_callback = self.events_callback
+        # sets = self.sets
 
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
                    '{}/Screens/resources/imgs/mango.jpg'.format(
@@ -165,13 +171,25 @@ class MangoPaint(App):
         self.manager_open = False
         self.set_chevron_menu()
 
-    def events(self, instance, keyboard, keycode, text, modifiers):
+    def events_program(self, *args):
         """Called when buttons are pressed on the mobile device."""
 
-        if keyboard in (1001, 27):
-            if self.manager_open:
-                self.file_manager.back()
+        print(args)
+        if len(args) == 2:
+            event = args[1]
+        else:
+            try:
+                _args = args[0]
+                event = _args if isinstance(_args, str) else str(_args) if \
+                    isinstance(_args, dict) else _args.id
+            except AttributeError:
+                event = args[1]
+        if event == sets.string_lang_exit_key:
+            self.exit_program()
+        elif event in (1001, 27):
+            self.back_screen(event)
         return True
+
 
     def callback_for_menu_items(self, *args):
         toast(args[0])
@@ -256,24 +274,47 @@ class MangoPaint(App):
             else:
                 add_icon_item(name_icon)
 
-    def set_menu_for_demo_apps(self):
-        if not len(self.menu_for_demo_apps):
-            for name_item in self.demo_apps_list:
-                self.menu_for_demo_apps.append(
-                    {'viewclass': 'OneLineListItem',
-                     'text': name_item,
-                     'on_release': lambda x=name_item: self.show_demo_apps(x)})
+    def show_gallery(self):
+        pass
 
-    def show_demo_apps(self, name_item):
-        name_item = name_item.lower()
-        {
-            'coffee menu': self.show_coffee_menu,
-            'shop window': self.show_shop_window,
-            'registration': self.show_registration_form_one,
-            'fitness club': self.show_fitness_club}[name_item]()
-        self.main_widget.ids.scr_mngr.current = name_item
-        self.instance_menu_demo_apps.dismiss()
 
+    def show_mystudio(self):
+        pass
+
+    def exit_program(self, *args):
+
+            def dismiss(*args):
+                self.open_dialog = False
+
+            def answer_callback(answer):
+                if answer == sets.string_lang_yes:
+                    sys.exit(0)
+                dismiss()
+
+            if not self.open_dialog:
+                KDialog(answer_callback=answer_callback, 
+                        on_dismiss=dismiss,
+                        separator_color=sets.separator_color,
+                        title_color=get_color_from_hex(sets.theme_text_black_color),
+                        title=self.name_program).show(
+                    text=sets.string_lang_exit.format(core.theme_text_black_color),
+                    text_button_ok=sets.string_lang_yes,
+                    text_button_no=sets.string_lang_no, param='query',
+                    auto_dismiss=True
+                )
+                self.open_dialog = True            
+
+    def back_screen(self, event):
+        if self.screen.ids.screenmanager.current == '':
+            if event in (1001, 27):
+                self.exit_program()
+            return
+
+        if len(self.screen.ids.screen_manager.screen) != 1:
+            self.screen.ids.screen_manager.screen.pop()
+        
+        self.screen.ids.screen_manager.current = \
+            self.screen.ids.screen_manager.screen_name[-1]
 
     def on_pause(self):
         return True
@@ -281,8 +322,15 @@ class MangoPaint(App):
     def on_stop(self):
         pass
 
+    def on_resume(self):
+        print('on_resume')
+
     def open_settings(self, *args):
         return False
+
+    def set_config(self, *args):
+        return False
+
 
 
 if __name__ == ('__main__'):
