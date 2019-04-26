@@ -46,14 +46,16 @@ except Exception:
 
 __version__ = "0.0.1"
 
-
-def toast(text):
-    # FIXME: crush with Python3.
-    try:
-        from kivymd.toast import toast
-    except TypeError:
-        from kivymd.toast.kivytoast import toast
-    toast(text)
+# Python 2.7+ 만 동작,  
+# 3.5+ 이상은 아직 개발중.
+def toast(text): # 텍스트 글자를 안개처리한 것처럼 보여주는 fancy 기능
+    # # FIXME: crush with Python3.
+    # try:
+    #     from kivymd.toast import toast
+    # except TypeError:
+    #     from kivymd.toast.kivytoast import toast
+    # toast(text)
+    pass
 
 
 class MangoPaint(App, Controller):
@@ -66,10 +68,11 @@ class MangoPaint(App, Controller):
     main_widget = None
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
+    
 
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(MangoPaint, self).__init__(**kwargs)
 
         self.Window = Window
         self.manager = None
@@ -113,8 +116,10 @@ class MangoPaint(App, Controller):
         self.demo_apps_list = [
             'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
-        Window.bind(on_keyboard=self.events_program)
-        events_callback = self.events_callback
+        # Window.bind(on_keyboard=self.events_callback)
+        self.ids.
+        bind(on_keyboard=self.events_callback)
+
         # sets = self.sets
 
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
