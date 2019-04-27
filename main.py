@@ -35,14 +35,15 @@ from Libs import settings as sets
 
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
+# directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
 try:
     import kivy
-    kivy.require('1.9.1')
+    kivy.require('1.10.0')
 
 except Exception:
-    directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
-    traceback.print_exc(file=open('{}/error.log'.format(directory), 'w'))
+
+    traceback.print_exc(file=open('{}/error.log'.format(root), 'w'))
 
 __version__ = "0.0.1"
 
@@ -66,7 +67,7 @@ class MangoPaint(App, Controller):
     title = "MangoPaint"
     theme_cls.theme_style = 'Dark'
     main_widget = None
-    events_callback = ObjectProperty(None)
+    # events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
     
 
@@ -116,23 +117,22 @@ class MangoPaint(App, Controller):
         self.demo_apps_list = [
             'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
-        # Window.bind(on_keyboard=self.events_callback)
-        self.ids.
-        bind(on_keyboard=self.events_callback)
 
+        # self.bind(events_callback=self.events_program)
+        # events_callback = self.events_callback
         # sets = self.sets
 
-        crop_image((Window.width, int(dp(Window.height * 35 // 100))),
-                   '{}/Screens/resources/imgs/mango.jpg'.format(
-                       self.directory),
-                   '{}/Screens/resources/imgs/mango.jpg'.format(
-                       self.directory))
+        # crop_image((Window.width, int(dp(Window.height * 35 // 100))),
+        #            '{}/Screens/resources/imgs/mango.jpg'.format(root),
+        #            '{}/Screens/resources/imgs/mango.jpg'.format(root))
+
+        print('init end')
 
     def crop_image_for_tile(self, instance, size, path_to_crop_image):
         """Crop images for Grid screen."""
-
+        print('crop_image')
         if not os.path.exists(
-                os.path.join(self.directory, path_to_crop_image)):
+                os.path.join(root, path_to_crop_image)):
             size = (int(size[0]), int(size[1]))
             path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
             crop_image(size, path_to_origin_image, path_to_crop_image)
@@ -176,24 +176,24 @@ class MangoPaint(App, Controller):
         self.manager_open = False
         self.set_chevron_menu()
 
-    def events_program(self, *args):
-        """Called when buttons are pressed on the mobile device."""
+    # def events_program(self, *args):
+    #     """Called when buttons are pressed on the mobile device."""
 
-        print(args)
-        if len(args) == 2:
-            event = args[1]
-        else:
-            try:
-                _args = args[0]
-                event = _args if isinstance(_args, str) else str(_args) if \
-                    isinstance(_args, dict) else _args.id
-            except AttributeError:
-                event = args[1]
-        if event == sets.string_lang_exit_key:
-            self.exit_program()
-        elif event in (1001, 27):
-            self.back_screen(event)
-        return True
+    #     print(args)
+    #     if len(args) == 2:
+    #         event = args[1]
+    #     else:
+    #         try:
+    #             _args = args[0]
+    #             event = _args if isinstance(_args, str) else str(_args) if \
+    #                 isinstance(_args, dict) else _args.id
+    #         except AttributeError:
+    #             event = args[1]
+    #     if event == sets.string_lang_exit_key:
+    #         self.exit_program()
+    #     elif event in (1001, 27):
+    #         self.back_screen(event)
+    #     return True
 
 
     def callback_for_menu_items(self, *args):
@@ -201,6 +201,8 @@ class MangoPaint(App, Controller):
 
     def build(self):
         self.main_widget = Builder.load_file('{}/Screens/main.kv'.format(root))
+        # events_callback=self.events_program
+        # sets=self.sets
         return self.main_widget
 
     def show_example_alert_dialog(self):
@@ -278,13 +280,6 @@ class MangoPaint(App, Controller):
                     add_icon_item(name_icon)
             else:
                 add_icon_item(name_icon)
-
-    def show_gallery(self):
-        pass
-
-
-    def show_mystudio(self):
-        pass
 
     def exit_program(self, *args):
 
