@@ -3,12 +3,9 @@
 # navdrawer.py
 # ------------------------------------------------------------------------
 # Notice:
-#   - 
-
-
+#   -
 
 from kivy.properties import ObjectProperty
-
 from kivymd.navigationdrawer import NavigationLayout
 
 

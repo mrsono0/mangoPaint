@@ -1,7 +1,7 @@
 
 #:import MDToolbar kivymd.toolbar.MDToolbar
-#:import NavDrawer Programs.navdrawer.NavDrawer
 #:import License Programs.license.License
+#:import NavDrawer Programs.navdrawer.NavDrawer
 #:import BaseScreen Programs.basescreen.BaseScreen
 #:import About Programs.about.About
 
@@ -16,7 +16,7 @@
             spacing: dp(5)
 
             MDToolbar:
-                id: action_bar
+                id: mdtool_bar
                 background_color: app.theme_cls.primary_color
                 title: app.title
                 left_action_items: [['menu', lambda x: nav_drawer._toggle()]]
@@ -31,6 +31,6 @@
 
                 License:
                     id: license
-                
+
                 About:
                     id: about

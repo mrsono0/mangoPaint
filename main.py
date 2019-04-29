@@ -93,11 +93,11 @@ def main():
             except Exception:
                 sys.exit(1)
         report = 'aaa'
-        # report = BugReporter(
-        #     callback_report=callback_report, 
-        #     txt_report=text_error,
-        #     icon_background=os.path.join('data', 'images', 'icon.png') # easy 아이콘 디렉토리 찾아 수정할 것
-        # )
+        report = BugReporter(
+            callback_report=callback_report, 
+            txt_report=text_error,
+            icon_background=os.path.join('Screens', 'resources', 'icons', 'logo.png') # easy 아이콘 디렉토리 찾아 수정할 것
+        )
 
         if app:
             try:

@@ -56,7 +56,7 @@ class MangoPaint(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
     title = 'Mango Paint'
-    icon = 'icon.png'
+    icon = 'Screens/resources/icons/logo.png'
     screen = ObjectProperty(None)
     # lang = StringProperty('en')
 
@@ -67,12 +67,12 @@ class MangoPaint(App):
         Window.bind(on_keybord=self.events_program)
         Window.soft_input_mode = 'below_target'
 
-        # self.list_previous_screens = ['base']
-        # self.window = Window
-        # self.config = ConfigParser()
-        # self.manager = None
-        # self.window_language = None
-        # self.exit_interval = False
+        self.list_previous_screens = ['base']
+        self.window = Window
+        self.config = ConfigParser()
+        self.manager = None
+        self.window_language = None
+        self.exit_interval = False
         self.name_program = sets.string_lang_title
         self.sets = sets
 
@@ -98,6 +98,7 @@ class MangoPaint(App):
 
         self.set_value_from_config()
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
+
         # 메인화면
         self.screen = StartScreen(
             title_previous=self.name_program,

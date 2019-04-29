@@ -32,7 +32,7 @@ class BugReporter(FloatLayout):
     report_readonly = BooleanProperty(False)
     '''Запрещено ли редактировать текст ошибки'''
 
-    icon_background = StringProperty('data/logo/kivy-icon-256.png')
+    icon_background = StringProperty('Screens/resources/icons/logo.png')
     '''Фоновое изображение окна'''
 
     txt_button_report = StringProperty('Report Bug')
@@ -43,7 +43,7 @@ class BugReporter(FloatLayout):
         super(BugReporter, self).__init__(**kwargs)
 
         if not os.path.exists(self.icon_background):
-            self.icon_background = 'data/logo/kivy-icon-256.png'
+            self.icon_background = 'Screens/resources/icons/logo.png'
 
     def _close(self, *args):
         from kivy.app import App
