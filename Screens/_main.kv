@@ -6,6 +6,12 @@
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDTextField kivymd.textfields.MDTextField
 
+
+<MySmartTileWithLabel@SmartTileWithLabel>:
+    mipmap: True
+    font_style: 'Subhead'
+
+
 BoxLayout:
     id: mango_paint
 
@@ -19,13 +25,12 @@ BoxLayout:
             title: app.title
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
-            background_hue: '500'
+            background_hue: '700'
+            height: app.theme_cls.standard_increment - dp(15)
             elevation: 10
-            left_action_items:
-                [['menu', lambda x: app.root.toggle_nav_drawer()]]
+            left_action_items: [['arrow-left', lambda x: None]]
             right_action_items:
-                [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
-            on_right_action_items: app.events_callback('set_config')
+                [['dots-vertical', lambda x: None]]
 
 
 
@@ -33,22 +38,25 @@ BoxLayout:
             id: manager
 
             Screen:
+                name: 'btn1'
+
+                MDRaisedButton:
+                    pos_hint: {'center_x': .5, 'center_y': .55}
+                    on_release: manager.current = 'thumbnail'
+                    text: 'Open Grid'
+
+            Screen:
+
                 name: 'thumbnail'
-                on_enter:            
-                    app.crop_image_for_tile(tile_1, tile_1.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_2, tile_2.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_3, tile_3.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_4, tile_4.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_5, tile_5.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_6, tile_6.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
-                    app.crop_image_for_tile(tile_7, tile_7.size, \
-                    '/home/ubuntu/codes/mangoPaint/mangoPaint/Screens/resources/imgs/mango.jpg')
+
+                on_enter:
+                    app.crop_image_for_tile(tile_1, tile_1.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_2, tile_2.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_3, tile_3.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_4, tile_4.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_5, tile_5.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_6, tile_6.size, 'Screens/resources/imgs/mango.jpg')
+                    app.crop_image_for_tile(tile_7, tile_7.size, 'Screens/resources/imgs/mango.jpg')
 
                 ScrollView:
                     do_scroll_x: False
@@ -93,7 +101,6 @@ BoxLayout:
                                 "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
 
 
-
         MDBottomNavigation:
 
             MDBottomNavigationItem:
@@ -101,8 +108,7 @@ BoxLayout:
                 text: "gallery"
                 icon: "home"
                 on_tab_press:
-                    print('Hi~')
-
+                    app.show_gallery()
 
             MDBottomNavigationItem:
                 name: 'mystudio'
@@ -110,11 +116,10 @@ BoxLayout:
                 icon: "image-filter-frames"
                 on_tab_press:
                     app.show_mystudio()
-                    app.set_title_toolbar(self.text)
                         
             MDBottomNavigationItem:
                 name: 'purchase'
                 text: "Purchase"
                 icon: "basket"
                 on_tab_press:
-                    app.events_callback('show_purchase')
+                    app.show_purchase()
