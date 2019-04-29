@@ -7,7 +7,7 @@ import sys
 import inspect
 
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.utils.cropimage import crop_image
@@ -24,9 +24,9 @@ Builder.load_file('{}/Screens/startscreen.kv'.format(_root))
 
 
 class StartScreen(BoxLayout):
-
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
+    title_previous = StringProperty('') # 액션바
 
     def __init__(self, **kwargs):
         super(StartScreen, self).__init__(**kwargs)
