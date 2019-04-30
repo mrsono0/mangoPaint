@@ -17,7 +17,8 @@ from kivy.uix.gridlayout import GridLayout
 root = os.path.split(__file__)[0]
 root = root if root != '' else os.getcwd()
 _root = os.path.abspath('.')
-Builder.load_file('{}/Screens/startscreen.kv'.format(_root))
+# main.py 에서 일괄적으로 /Screens 밑 kv 파일들을  읽어드리기 때문
+# Builder.load_file('{}/Screens/startscreen.kv'.format(_root))
 
 
 class StartScreen(BoxLayout):

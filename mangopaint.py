@@ -4,8 +4,9 @@
 
 import os
 import sys
+
+from ast import literal_eval
 from random import choice
-# import traceback
 
 from kivy.app import App
 from kivy.uix.modalview import ModalView
@@ -19,6 +20,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from main import __version__
 
 from Programs.startscreen import StartScreen
+from Libs.translation import Translation
 
 from kivymd.theming import ThemeManager
 from kivymd.label import MDLabel
@@ -58,7 +60,7 @@ class MangoPaint(App):
     title = 'Mango Paint'
     icon = 'Screens/resources/icons/logo.png'
     screen = ObjectProperty(None)
-    # lang = StringProperty('en')
+    lang = StringProperty('en')
 
 
 # 해당 클래스가 객체화될때 구동되는 섹션으로 관련된 컴포넌트들을 활성화시켜서 실제 running 되기 직전까지 만들어놓음.
@@ -74,7 +76,15 @@ class MangoPaint(App):
         self.window_language = None
         self.exit_interval = False
         self.name_program = sets.string_lang_title
-        self.sets = sets
+
+        self.dict_language = literal_eval(
+            open(
+                os.path.join(self.directory, 'Libs', 'settings', 'locales.txt')).read()
+        )
+
+        self.translation = Translation(
+            self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'settings', 'locales')
+        )
 
     def get_application_config(self):
         return super(MangoPaint, self).get_application_config(
@@ -197,25 +207,24 @@ class MangoPaint(App):
                 [['menu', lambda x: self.nav_drawer._toggle()]]
 
     def show_about(self, *args):
-        pass
-        # self.nav_drawer.toggle_nav_drawer()
-        # self.screen.ids.about.ids.label.text = \
-        #     self.translation._(
-        #         u'[size=20][b]NAME_PROJECT[/b][/size]\n\n'
-        #         u'[b]Version:[/b] {version}\n'
-        #         u'[b]License:[/b] MIT\n\n'
-        #         u'[size=20][b]Developer[/b][/size]\n\n'
-        #         u'[ref=SITE_PROJECT]'
-        #         u'[color={link_color}]NAME_AUTHOR[/color][/ref]\n\n'
-        #         u'[b]Source code:[/b] '
-        #         u'[ref=REPO_PROJECT]'
-        #         u'[color={link_color}]GitHub[/color][/ref]').format(
-        #         version=__version__,
-        #         link_color=get_hex_from_color(self.theme_cls.primary_color)
-        #     )
-        # self.manager.current = 'about'
-        # self.screen.ids.action_bar.left_action_items = \
-        #     [['chevron-left', lambda x: self.back_screen(27)]]
+        self.nav_drawer.toggle_nav_drawer()
+        self.screen.ids.about.ids.label.text = \
+            self.translation._(
+                u'[size=20][b]MangoPaint[/b][/size]\n\n'
+                u'[b]Version:[/b] {version}\n'
+                u'[b]License:[/b] MIT\n\n'
+                u'[size=20][b]Developer[/b][/size]\n\n'
+                u'[ref=SITE_PROJECT]'
+                u'[color={link_color}]NAME_AUTHOR[/color][/ref]\n\n'
+                u'[b]Source code:[/b] '
+                u'[ref=REPO_PROJECT]'
+                u'[color={link_color}]GitHub[/color][/ref]').format(
+                version=__version__,
+                link_color=get_hex_from_color(self.theme_cls.primary_color)
+            )
+        self.manager.current = 'about'
+        self.screen.ids.action_bar.left_action_items = \
+            [['chevron-left', lambda x: self.back_screen(27)]]
 
     def show_license(self, *args):
         pass
@@ -263,21 +272,20 @@ class MangoPaint(App):
         self.window_language.open()
 
     def dialog_exit(self):
-        pass
-        # def check_interval_press(interval):
-        #     self.exit_interval += interval
-        #     if self.exit_interval > 5:
-        #         self.exit_interval = False
-        #         Clock.unschedule(check_interval_press)
+        def check_interval_press(interval):
+            self.exit_interval += interval
+            if self.exit_interval > 5:
+                self.exit_interval = False
+                Clock.unschedule(check_interval_press)
 
-        # if self.exit_interval:
-        #     sys.exit(0)
+        if self.exit_interval:
+            sys.exit(0)
             
-        # Clock.schedule_interval(check_interval_press, 1)
-        # toast(self.translation._('Press Back to Exit'))
+        Clock.schedule_interval(check_interval_press, 1)
+        toast(self.translation._('Press Back to Exit'))
         
-    # def on_lang(self, instance, lang):
-    #     self.translation.switch_lang(lang)
+    def on_lang(self, instance, lang):
+        self.translation.switch_lang(lang)
 
     def on_pause(self):
         ''' 이렇게 하면 응용 프로그램이 '일시 중지'로 표시됩니다.
