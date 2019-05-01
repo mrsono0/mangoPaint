@@ -64,20 +64,32 @@
                 spacing: dp(10)
 
                 LabelSection:
-                    # text: 'aaa'
-                    text:  app.translation._('메뉴:')
+                    text:  app.translation._('Menu:')  # 매뉴:
                     events_callback: lambda x: x
 
                 SingleIconItem:
+                    icon: 'camera-party-mode'   
+                    text: app.translation._('gallery')  # 갤러리  
+                    events_callback: app.select_locale
+
+                SingleIconItem:
+                    icon: 'palette'
+                    text: app.translation._('mystudio')  # 내 스튜디오 
+                    events_callback: app.select_locale
+
+                SingleIconItem:
+                    icon: 'cart'
+                    text: app.translation._('purchase')  # 구매  
+                    events_callback: app.select_locale
+
+                SingleIconItem:
                     icon: 'web'
-                    # text: 'bbb'
-                    text: app.translation._('언어')
+                    text: app.translation._('language')  # 언어 
                     events_callback: app.select_locale
 
                 SingleIconItem:
                     icon: 'language-python'
-                    # text: 'ccc'
-                    text: app.translation._('라이센스')
+                    text: app.translation._('License')   # 라이센스 
                     events_callback: app.show_license
 
                 SingleIconItem:

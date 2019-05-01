@@ -6,7 +6,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 
-# from kivymd.selectioncontrols import MDCheckbox
+from kivymd.selectioncontrols import MDCheckbox
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.button import MDIconButton
 from kivymd.list import (
@@ -42,12 +42,12 @@ class RightButton(IRightBodyTouch,  Icon):
     pass
 
 
-# class CheckWidget(IRightBodyTouch, MDCheckbox):
-#     pass
+class CheckWidget(IRightBodyTouch, MDCheckbox):
+    pass
 
 
-# class OneSelectCheckWidget(ILeftBodyTouch, MDCheckbox):
-#     pass
+class OneSelectCheckWidget(ILeftBodyTouch, MDCheckbox):
+    pass
 
 
 class OneSelectCheckItem(OneLineAvatarIconListItem):
@@ -59,13 +59,13 @@ class OneSelectCheckItem(OneLineAvatarIconListItem):
 
 class CheckItem(TwoLineAvatarIconListItem):
     events_callback = ObjectProperty()
-    '''Функция обработки сигналов экрана.'''
+    '''신호 처리 기능 .'''
 
     active = BooleanProperty(False)
-    '''Активный ли чекбокс списка или нет.'''
+    '''체크 리스트가 활성 상태인지 아닌지 여부 '''
 
     icon = StringProperty()
-    '''Путь к иконке списка.'''
+    '''목록 아이콘 경로 '''
 
 
 class IconItemThree(ThreeLineAvatarIconListItem):
@@ -99,7 +99,7 @@ class SingleIconItem(OneLineIconListItem):
 
 class Lists(BoxLayout):
     events_callback = ObjectProperty()
-    '''Функция обработки сигналов экрана.'''
+    '''신호 처리 기능 .'''
 
     dict_items = DictProperty()
     '''{'Name item': ['Desc item', 'icon_item.png', True/False}.'''
@@ -108,8 +108,7 @@ class Lists(BoxLayout):
     '''['Desc item', 'icon_item.png', True/False]...'''
 
     right_icons = ListProperty()
-    '''Список путей к иконкам для кнопок,
-    использующихся в пункте списка справа.'''
+
 
     flag = StringProperty('single_list')
 

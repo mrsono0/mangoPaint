@@ -22,7 +22,7 @@ from main import __version__
 
 from Programs.startscreen import StartScreen
 from Libs.translation import Translation
-from Libs.lists import Lists
+# from Libs.lists import Lists
 
 from kivymd.theming import ThemeManager
 from kivymd.label import MDLabel
