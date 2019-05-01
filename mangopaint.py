@@ -16,17 +16,19 @@ from kivy.config import ConfigParser
 from kivy.logger import PY2
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.utils import get_hex_from_color, get_color_from_hex
 
 from main import __version__
 
 from Programs.startscreen import StartScreen
 from Libs.translation import Translation
+from Libs.lists import Lists
 
 from kivymd.theming import ThemeManager
 from kivymd.label import MDLabel
 from kivymd.toast import toast
 
-# from dialogs import card
+from Libs.dialogs import card
 
 # from kivy.config import ConfigParser
 
@@ -79,12 +81,28 @@ class MangoPaint(App):
 
         self.dict_language = literal_eval(
             open(
-                os.path.join(self.directory, 'Libs', 'settings', 'locales.txt')).read()
+                os.path.join(self.directory, 'Libs', 'locales', 'locales.txt')).read()
         )
 
         self.translation = Translation(
-            self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'settings', 'locales')
+            self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'locales')
         )
+
+        self.previous_text = \
+            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
+            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
+            "examples, open the menu and select from the list the desired " \
+            "example or".format(COLOR=get_hex_from_color(
+                self.theme_cls.primary_color))
+        self.previous_text_end = \
+            "for show example apps\n\n" \
+            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
+            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
+            "[/b][/u]\n\n" \
+            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
+            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
+            "[/b][u]".format(COLOR=get_hex_from_color(
+                self.theme_cls.primary_color))        
 
     def get_application_config(self):
         return super(MangoPaint, self).get_application_config(
@@ -212,19 +230,17 @@ class MangoPaint(App):
             self.translation._(
                 u'[size=20][b]MangoPaint[/b][/size]\n\n'
                 u'[b]Version:[/b] {version}\n'
-                u'[b]License:[/b] MIT\n\n'
-                u'[size=20][b]Developer[/b][/size]\n\n'
-                u'[ref=SITE_PROJECT]'
-                u'[color={link_color}]NAME_AUTHOR[/color][/ref]\n\n'
+                u'[b]License:[/b] MIT License\n\n'
+                u'[size=20][b]mangoPaint develop Team.[/b][/size]\n\n'
+                u'[ref=www.miraelabs.com]'
+                u'[color={link_color}]mango-saam, susan han, JM, \n Yoo Jung, Taeyoon Lee, 손정현 [/color][/ref]\n\n'
                 u'[b]Source code:[/b] '
                 u'[ref=REPO_PROJECT]'
                 u'[color={link_color}]GitHub[/color][/ref]').format(
                 version=__version__,
                 link_color=get_hex_from_color(self.theme_cls.primary_color)
-            )
+                )
         self.manager.current = 'about'
-        self.screen.ids.action_bar.left_action_items = \
-            [['chevron-left', lambda x: self.back_screen(27)]]
 
     def show_license(self, *args):
         pass
@@ -238,17 +254,14 @@ class MangoPaint(App):
                     os.path.join(self.directory, 'LICENSE')).read()
         self.nav_drawer._toggle()
         self.manager.current = 'license'
-        self.screen.ids.action_bar.left_action_items = \
-            [['chevron-left', lambda x: self.back_screen(27)]]
-        self.screen.ids.action_bar.title = \
-            self.translation._('MIT LICENSE')
+        # self.screen.ids.action_bar.title = \
+        #     self.translation._('MIT LICENSE')
 
     def select_locale(self, *args):
-        '''Выводит окно со списком имеющихся языковых локализаций для
-        установки языка приложения.'''
+        '''사용 가능한 언어 locale 이  있는 창을 표시합니다.
+        응용 프로그램 언어 설정.'''
 
         def select_locale(name_locale):
-            '''Устанавливает выбранную локализацию.'''
 
             for locale in self.dict_language.keys():
                 if name_locale == self.dict_language[locale]:

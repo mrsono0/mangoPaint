@@ -1,0 +1,1 @@
+find . -name "*.py" | xargs /usr/bin/pygettext3.5 -o Libs/settings/message.pot

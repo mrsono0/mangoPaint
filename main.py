@@ -23,7 +23,6 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.icon_definitions import md_icons
 # from kivymd.material_resources import DEVICE_TYPE
 
-from Programs.controller import Controller
 from Libs import settings as sets
 
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
@@ -92,7 +91,6 @@ def main():
                 webbrowser.open(url)
             except Exception:
                 sys.exit(1)
-        report = 'aaa'
         report = BugReporter(
             callback_report=callback_report, 
             txt_report=text_error,
@@ -102,8 +100,8 @@ def main():
         if app:
             try:
                 pass
-                # app.screen.clear_widgets()
-                # app.screen.add_widget(report)
+                app.screen.clear_widgets()
+                app.screen.add_widget(report)
             except AttributeError:
             	create_error_monitor()
         else:
