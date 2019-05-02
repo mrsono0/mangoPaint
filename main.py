@@ -3,6 +3,7 @@
 # main.py
 # ------------------------------------------------------------------------
 # Notice:
+#   - 앱 레벨에서의 설정값들 확인하는 기능으로 화면 없음.
 #   - window size: Put the Config settings before all the other imports
 #   - it's too late after importing Window
 
@@ -44,7 +45,7 @@ except Exception:
     print(traceback.print_exc())
     sys.exit(1)
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 def main():

@@ -1,4 +1,8 @@
-class Gallery(object):
+from kivy.uix.screenmanager import Screen
+
+
+
+class MyStudio(Screen):
     pass
 
 

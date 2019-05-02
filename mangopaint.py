@@ -1,6 +1,12 @@
 # mangopaint.py
 # python3.5.3,   coding: utf-8
 # Screen Manager P/G :  Controller
+# ------------------------------------------------------------------------
+# Notice:
+#   - 프로젝트 레벨에서의 설정값들 확인하는 기능으로 역시 화면 없음.
+#     메인화면인 StartScreen 은 베이스화면
+#   - window size: Put the Config settings before all the other imports
+#   - it's too late after importing Window
 
 import os
 import sys
@@ -22,7 +28,7 @@ from main import __version__
 
 from Programs.startscreen import StartScreen
 from Libs.translation import Translation
-# from Libs.lists import Lists
+from Libs.lists import Lists
 
 from kivymd.theming import ThemeManager
 from kivymd.label import MDLabel
@@ -53,7 +59,7 @@ from Libs import settings as sets
 
 class MangoPaint(App):
 
-    # import시  메모리 할당 및 초기값 넣어주는 섹션
+    # import시  메모리에 변수 할당 및 초기값 넣어주는 섹션
     # mainscreen = ObjectProperty(None)
     # screen = ObjectProperty(None)
 
@@ -131,7 +137,7 @@ class MangoPaint(App):
         self.screen = StartScreen(
             title_previous=self.name_program,
             events_callback=self.events_program,
-            sets=sets
+            # sets=sets
         )
 
         self.manager = self.screen.ids.manager
@@ -185,44 +191,35 @@ class MangoPaint(App):
             self.back_screen(event=keyboard)
         return True
 
-    def exit_program(self, *args):
+    def show_gallery(self, *args):
+        print('show_gallery2')
+        pass
 
-        def dismiss(*args):
-            self.open_dialog = False
+    def show_mystudio(self, *args):
+        print('show_mystudio2')        
+        pass
 
-        def answer_callback(answer):
-            if answer == sets.string_lang_yes:
-                sys.exit(0)
-            dismiss()
+    def show_community(self, *args):
+        print('show_community2')        
+        pass
 
-        if not self.open_dialog:
-            KDialog(answer_callback=answer_callback, 
-                    on_dismiss=dismiss,
-                    separator_color=sets.separator_color,
-                    title_color=get_color_from_hex(sets.theme_text_black_color),
-                    title=self.name_program).show(
-                text=sets.string_lang_exit.format(sets.theme_text_black_color),
-                text_button_ok=sets.string_lang_yes,
-                text_button_no=sets.string_lang_no, param='query',
-                auto_dismiss=True
-            )
-            self.open_dialog = True            
+    def show_purchase(self, *args):
+        print('show_purchase2')        
+        pass
 
-    def back_screen(self, event=None):
-        ''' screen manager '''
-
-        # 메인 화면에서 백 키 클릭
-        if event in (1001, 27):
-            if self.manager.current == 'base':
-                self.dialog_exit()
-                return
-            try:
-                self.manager.current = self.list_previous_screens.pop()
-            except:
-                self.manager.current = 'base'
-            self.screen.ids.action_bar.title = self.title
-            self.screen.ids.action_bar.left_action_items = \
-                [['menu', lambda x: self.nav_drawer._toggle()]]
+    def show_license(self, *args):
+        if not PY2:
+            self.screen.ids.license.ids.text_license.text = \
+                self.translation._('%s') % open(
+                    os.path.join(self.directory, 'LICENSE'), encoding='utf-8').read()
+        else:
+            self.screen.ids.license.ids.text_license.text = \
+                self.translation._('%s') % open(
+                    os.path.join(self.directory, 'LICENSE')).read()
+        self.nav_drawer._toggle()
+        self.manager.current = 'license'
+        # self.screen.ids.action_bar.title = \
+        #     self.translation._('MIT LICENSE')
 
     def show_about(self, *args):
         self.nav_drawer.toggle_nav_drawer()
@@ -242,20 +239,6 @@ class MangoPaint(App):
                 )
         self.manager.current = 'about'
 
-    def show_license(self, *args):
-        pass
-        if not PY2:
-            self.screen.ids.license.ids.text_license.text = \
-                self.translation._('%s') % open(
-                    os.path.join(self.directory, 'LICENSE'), encoding='utf-8').read()
-        else:
-            self.screen.ids.license.ids.text_license.text = \
-                self.translation._('%s') % open(
-                    os.path.join(self.directory, 'LICENSE')).read()
-        self.nav_drawer._toggle()
-        self.manager.current = 'license'
-        # self.screen.ids.action_bar.title = \
-        #     self.translation._('MIT LICENSE')
 
     def select_locale(self, *args):
         '''사용 가능한 언어 locale 이  있는 창을 표시합니다.
@@ -284,6 +267,22 @@ class MangoPaint(App):
             )
         self.window_language.open()
 
+    def back_screen(self, event=None):
+        ''' screen manager '''
+
+        # 메인 화면에서 백 키 클릭
+        if event in (1001, 27):
+            if self.manager.current == 'base':
+                self.dialog_exit()
+                return
+            try:
+                self.manager.current = self.list_previous_screens.pop()
+            except:
+                self.manager.current = 'base'
+            self.screen.ids.action_bar.title = self.title
+            self.screen.ids.action_bar.left_action_items = \
+                [['menu', lambda x: self.nav_drawer._toggle()]]
+
     def dialog_exit(self):
         def check_interval_press(interval):
             self.exit_interval += interval
@@ -310,3 +309,26 @@ class MangoPaint(App):
 
     def on_stop(self):
         print('on_stop')
+
+    def exit_program(self, *args):
+
+        def dismiss(*args):
+            self.open_dialog = False
+
+        def answer_callback(answer):
+            if answer == sets.string_lang_yes:
+                sys.exit(0)
+            dismiss()
+
+        if not self.open_dialog:
+            KDialog(answer_callback=answer_callback, 
+                    on_dismiss=dismiss,
+                    separator_color=sets.separator_color,
+                    title_color=get_color_from_hex(sets.theme_text_black_color),
+                    title=self.name_program).show(
+                text=sets.string_lang_exit.format(sets.theme_text_black_color),
+                text_button_ok=sets.string_lang_yes,
+                text_button_no=sets.string_lang_no, param='query',
+                auto_dismiss=True
+            )
+            self.open_dialog = True

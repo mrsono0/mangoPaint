@@ -10,12 +10,12 @@ class Translation(Observable):
     observers = []
     lang = None
 
-    def __init__(self, defaultlang, domian, resource_dir):
+    def __init__(self, defaultlang, domain, resource_dir):
         super(Translation, self).__init__()
 
         self.ugettext = None
         self.lang = defaultlang
-        self.domian = domian
+        self.domain = domain
         self.resource_dir = resource_dir
         self.switch_lang(self.lang)
 
@@ -46,7 +46,7 @@ class Translation(Observable):
     def switch_lang(self, lang):
         # get the right locales directory, and instanciate a gettext
         locales = \
-            gettext.translation(self.domian, self.resource_dir, languages=[lang])
+            gettext.translation(self.domain, self.resource_dir, languages=[lang])
         try:
             self.ugettext = locales.ugettext
         except AttributeError:

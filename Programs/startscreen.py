@@ -21,10 +21,10 @@ _root = os.path.abspath('.')
 # Builder.load_file('{}/Screens/startscreen.kv'.format(_root))
 
 
-class StartScreen(BoxLayout):
+class StartScreen(BoxLayout):  # 메인화면 프레임과 스크린 메니저 화면 정의
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
-    title_previous = StringProperty('') # 액션바
+    title_previous = StringProperty('')  # 액션바
 
     def __init__(self, **kwargs):
         super(StartScreen, self).__init__(**kwargs)

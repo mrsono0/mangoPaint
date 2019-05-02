@@ -27,17 +27,17 @@ class BugReporter(FloatLayout):
     txt_report = StringProperty('')
 
     callback_report = ObjectProperty()
-    '''Функция отправки баг-репорта'''
+    '''버그 보고서 제출 기능'''
 
     report_readonly = BooleanProperty(False)
-    '''Запрещено ли редактировать текст ошибки'''
+    '''오류 텍스트를 편집할 수 있는지 여부 '''
 
     icon_background = StringProperty('Screens/resources/icons/logo.png')
-    '''Фоновое изображение окна'''
+    '''창 배경 이미지 '''
 
     txt_button_report = StringProperty('Report Bug')
     txt_button_close = StringProperty('Close')
-    '''Подписи кнопок'''
+    '''버튼 레이블'''
 
     def __init__(self, **kwargs):
         super(BugReporter, self).__init__(**kwargs)

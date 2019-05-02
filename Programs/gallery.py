@@ -13,6 +13,7 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
+from kivy.uix.screenmanager import Screen
 
 
 class MyImage(Image):
@@ -21,11 +22,12 @@ class MyImage(Image):
             print(self.source)
 
 
-class Image_Gallery(GridLayout):
+# class Gallery(GridLayout):
+class Gallery(Screen):
 
     def __init__(self, **kwargs):
-        super(Image_Gallery, self).__init__(**kwargs)
-        images = glob.glob('/home/ubuntu/Pictures/*.jpg')
+        super(Gallery, self).__init__(**kwargs)
+        images = glob.glob('/home/jarvis/Pictures/*.jpg')
         self.cols = 3
         for img in images:
             thumb = MyImage(source=img)

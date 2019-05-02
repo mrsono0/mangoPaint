@@ -1,8 +1,12 @@
 
 #:import MDToolbar kivymd.toolbar.MDToolbar
-#:import License Programs.license.License
 #:import NavDrawer Programs.navdrawer.NavDrawer
 #:import BaseScreen Programs.basescreen.BaseScreen
+#:import Gallery Programs.gallery.Gallery
+#:import MyStudio Programs.mystudio.MyStudio
+#:import Community Programs.community.Community
+#:import Purchase Programs.purchase.Purchase
+#:import License Programs.license.License
 #:import About Programs.about.About
 
 <StartScreen>
@@ -19,30 +23,30 @@
                 id: mdtool_bar
                 background_color: app.theme_cls.primary_color
                 title: app.title
-                left_action_items: [['menu', lambda x: nav_drawer._toggle()]]
+                left_action_items: [['menu', lambda x: nav_drawer._toggle()]]  # navigation 
                 elevation: 10
                 md_bg_color: app.theme_cls.primary_color
 
             ScreenManager:
                 id: manager
 
-                BaseScreen:
+                BaseScreen:   # 맨바닥
                     id: base
 
-                Gallery:
+                Gallery:  # 썸네일
                     id: gallery
 
-                MyStudio:
+                MyStudio:  # 내작업공간
                     id: mystudio
 
-                Purchase:
-                    id: purchase
-
-                Community:
+                Community:  # 회원들 작업공간
                     id: community
 
-                License:
+                Purchase:  # 구매신청
+                    id: purchase
+
+                License:  # 라이센스
                     id: license
 
-                About:
+                About:  # 어바웃
                     id: about
