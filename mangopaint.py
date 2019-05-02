@@ -192,7 +192,7 @@ class MangoPaint(App):
     def show_gallery(self, *args):
         print('show_gallery2')
         self.nav_drawer._toggle()
-        self.manager.current = 'gallery'
+
 
         # 갤러리 화면
         self.screen = Gallery(
@@ -200,6 +200,8 @@ class MangoPaint(App):
             events_callback=self.events_program,
             # sets = sets            
         )
+
+        # self.manager.current = 'gallery'
 
         # self.manager = self.screen.ids.manager
         # self.nav_drawer = self.screen.ids.nav_drawer

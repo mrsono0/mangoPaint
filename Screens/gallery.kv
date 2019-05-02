@@ -18,28 +18,28 @@
 
         
 
-        # Label:
-        #     size_hint: None, None
-        #     height: dp(10)
-        #     width: self.texture_size[0]
-        #     halign: 'left'
-        #     color: app.theme_cls.primary_color
-        #     font_size: '18sp'
-        #     # text: app.translation._('Directory..')
+        Label:
+            size_hint: None, None
+            height: dp(10)
+            width: self.texture_size[0]
+            halign: 'left'
+            color: app.theme_cls.primary_color
+            font_size: '18sp'
+            text: app.translation._('Directory..')
 
 
-        # Image:
-        #     source: 'Screens/resources/imgs/mango.jpg'
-        #     allow_stretch: True
+        Image:
+            source: 'Screens/resources/imgs/mango.jpg'
+            allow_stretch: True
 
 
-        # ScrollView:
+        ScrollView:
 
-        #     Label:
-        #         id: text_license
-        #         font_size: '13sp'
-        #         text_size: self.width, None
-        #         size_hint_y: None
-        #         markup: True
-        #         height: self.texture_size[1]
+            Label:
+                id: text_license
+                font_size: '13sp'
+                text_size: self.width, None
+                size_hint_y: None
+                markup: True
+                height: self.texture_size[1]
 
