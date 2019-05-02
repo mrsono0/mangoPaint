@@ -16,29 +16,30 @@
         padding: dp(10), dp(10)
         spacing: dp(10)
 
-        Label:
-            size_hint: None, None
-            height: dp(10)
-            width: self.texture_size[0]
-            halign: 'left'
-            color: app.theme_cls.primary_color
-            font_size: '18sp'
-            text: app.translation._('Directory..')
+        
 
-        # MDSeparator:
-
-        Image:
-            source: 'Screens/resources/imgs/mango.jpg'
-            allow_stretch: True
+        # Label:
+        #     size_hint: None, None
+        #     height: dp(10)
+        #     width: self.texture_size[0]
+        #     halign: 'left'
+        #     color: app.theme_cls.primary_color
+        #     font_size: '18sp'
+        #     # text: app.translation._('Directory..')
 
 
-        ScrollView:
+        # Image:
+        #     source: 'Screens/resources/imgs/mango.jpg'
+        #     allow_stretch: True
 
-            Label:
-                id: text_license
-                font_size: '13sp'
-                text_size: self.width, None
-                size_hint_y: None
-                markup: True
-                height: self.texture_size[1]
+
+        # ScrollView:
+
+        #     Label:
+        #         id: text_license
+        #         font_size: '13sp'
+        #         text_size: self.width, None
+        #         size_hint_y: None
+        #         markup: True
+        #         height: self.texture_size[1]
 

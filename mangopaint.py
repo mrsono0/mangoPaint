@@ -27,6 +27,7 @@ from kivy.utils import get_hex_from_color, get_color_from_hex
 from main import __version__
 
 from Programs.startscreen import StartScreen
+from Programs.gallery import Gallery
 from Libs.translation import Translation
 from Libs.lists import Lists
 
@@ -41,9 +42,6 @@ from Libs.dialogs import card
 
 from Libs import settings as sets
 
-# from Programs.mainscreen import MainScreen: MainScreen
-# from Programs.camera import Camera: MainScreen.Camera
-# from Programs.bottom import Buttom: ManinScreen.Buttom
 
 # from Programs.choice import Choice: Choice
 # from Programs.filter import Filter: CHoice.filter
@@ -193,7 +191,24 @@ class MangoPaint(App):
 
     def show_gallery(self, *args):
         print('show_gallery2')
-        pass
+        self.nav_drawer._toggle()
+        self.manager.current = 'gallery'
+
+        # 갤러리 화면
+        self.screen = Gallery(
+            title_previous=self.name_program,
+            events_callback=self.events_program,
+            # sets = sets            
+        )
+
+        # self.manager = self.screen.ids.manager
+        # self.nav_drawer = self.screen.ids.nav_drawer
+
+        return self.screen
+
+
+        # self.screen.ids.action_bar.title = \
+        #     self.translation._('MIT LICENSE')
 
     def show_mystudio(self, *args):
         print('show_mystudio2')        

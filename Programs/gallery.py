@@ -14,6 +14,7 @@ from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
+from kivy.properties import ObjectProperty, StringProperty
 
 
 class MyImage(Image):
@@ -25,13 +26,17 @@ class MyImage(Image):
 # class Gallery(GridLayout):
 class Gallery(Screen):
 
+    events_callback = ObjectProperty(None)
+    sets = ObjectProperty(None)
+    title_previous = StringProperty('')  # 액션바
+
     def __init__(self, **kwargs):
         super(Gallery, self).__init__(**kwargs)
-        images = glob.glob('/home/jarvis/Pictures/*.jpg')
+        images = glob.glob('/Users/jarvis/Pictures/*.jpg')
         self.cols = 3
         for img in images:
             thumb = MyImage(source=img)
-            self.add_widget(thumb)
+            self.ids.boxlayout.add_widget(thumb)
 
     def callback(self, obj, touch):
         print(obj.source)
