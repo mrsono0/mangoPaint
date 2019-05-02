@@ -32,11 +32,11 @@ class Gallery(Screen):
 
     def __init__(self, **kwargs):
         super(Gallery, self).__init__(**kwargs)
-        # images = glob.glob('/home/ubuntu/Pictures/*.jpg')
-        # self.cols = 3
-        # for img in images:
-        #     thumb = MyImage(source=img)
-        #     self.boxlayout.add_widget(thumb)
+        images = glob.glob('/home/ubuntu/Pictures/*.jpg')
+        self.cols = 3
+        for img in images:
+            thumb = MyImage(source=img)
+            self.ids.boxlayout_gallery.add_widget(thumb)
 
     def callback(self, obj, touch):
         print(obj.source)
