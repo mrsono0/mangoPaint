@@ -1,6 +1,7 @@
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 #:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
+# 시작 액션 
 
 <MySmartTileWithLabel@SmartTileWithLabel>:
     mipmap: True
@@ -8,16 +9,13 @@
 
 
 <Gallery>:
-    id: 'gallery'
+    name: 'gallery'
     orientation: 'vertical'
 
     BoxLayout:
-        id: 'boxlayout_gallery'
         orientation: 'vertical'
-        padding: dp(10), dp(10)
+        padding: dp(5), dp(10)
         spacing: dp(10)
-
-        
 
         Label:
             size_hint: None, None
@@ -28,6 +26,8 @@
             font_size: '18sp'
             text: app.translation._('Directory..')
 
+        Widget:
+
 
         Image:
             source: 'Screens/resources/imgs/mango.jpg'
@@ -37,10 +37,21 @@
         ScrollView:
 
             Label:
-                id: text_license
                 font_size: '13sp'
                 text_size: self.width, None
                 size_hint_y: None
                 markup: True
                 height: self.texture_size[1]
 
+        BoxLayout: 
+
+            MDFlatButton: 
+                text: app.sets.string_lang_create_account 
+                on_release: app.screen_root_manager.current = 'Create account' 
+
+            MDFlatButton: 
+                text: app.sets.string_lang_own_provider 
+                theme_text_color: 'Primary' 
+                on_release: 
+                    app.delete_textfield_and_set_check_in_addaccountroot()
+                    app.screen_root_manager.current = 'Add account own provider'

@@ -23,20 +23,25 @@ class MyImage(Image):
             print(self.source)
 
 
-# class Gallery(GridLayout):
 class Gallery(Screen):
 
     events_callback = ObjectProperty(None)
-    # sets = ObjectProperty(None)
-    # title_previous = StringProperty('')  # 액션바
+    sets = ObjectProperty(None)
+    title_previous = StringProperty('')  # 액션바
 
     def __init__(self, **kwargs):
         super(Gallery, self).__init__(**kwargs)
+
+    def load_images(self):
         images = glob.glob('/home/ubuntu/Pictures/*.jpg')
         self.cols = 3
         for img in images:
             thumb = MyImage(source=img)
-            self.ids.boxlayout_gallery.add_widget(thumb)
+            # self.screen.ids.boxlayout_gallery.add_widget(thumb)
+
+    def _on_enter(self, instance_toolbar, instance_program):
+        instance_toolbar.left_action_items = []
+        instance_toolbar.title = instance_program.title
 
     def callback(self, obj, touch):
         print(obj.source)

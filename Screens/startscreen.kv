@@ -1,13 +1,13 @@
 
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import NavDrawer Programs.navdrawer.NavDrawer
-#:import BaseScreen Programs.basescreen.BaseScreen
 #:import Gallery Programs.gallery.Gallery
 #:import MyStudio Programs.mystudio.MyStudio
 #:import Community Programs.community.Community
 #:import Purchase Programs.purchase.Purchase
 #:import License Programs.license.License
 #:import About Programs.about.About
+#:import NoTransition kivy.uix.screenmanager.NoTransition
 
 <StartScreen>
     orientation: 'vertical'
@@ -28,25 +28,51 @@
                 md_bg_color: app.theme_cls.primary_color
 
             ScreenManager:
-                id: manager
-
-                BaseScreen:   # 맨바닥
-                    id: base
+                id: root_manager
+                transition: NoTransition()
 
                 Gallery:  # 썸네일
                     id: gallery
+                    on_enter: self._on_enter(mdtool_bar, app)
+                    #on_leave:                    
 
                 MyStudio:  # 내작업공간
                     id: mystudio
+                    on_enter: self._on_enter(mdtool_bar, app)
+                    #on_leave: mdtool_bar.title = app.sets.string_lang_create_account                    
 
                 Community:  # 회원들 작업공간
                     id: community
+                    on_enter: self._on_enter(mdtool_bar, app)
+                    #on_leave:                    
 
                 Purchase:  # 구매신청
                     id: purchase
+                    on_enter: self._on_enter(mdtool_bar, app)
+                    #on_leave: 
+                    #    mdtool_bar.title = app.title; mdtool_bar.left_action_items = []                 
 
                 License:  # 라이센스
                     id: license
 
                 About:  # 어바웃
                     id: about
+
+                Introduction:  # 초기 화면 
+                    id: introduction
+                    # Вызывается при выводе текущего Activity на экран.
+                    on_enter: self._on_enter(action_bar, app)
+
+                CreateAccount:
+                    id: create_account
+                    on_enter: self._on_enter(action_bar, app, root_manager)
+
+                AddAccount:
+                    id: add_account
+                    on_enter: self._on_enter(action_bar, app)
+                    on_leave: action_bar.title = app.sets.string_lang_create_account
+
+                AddAccountOwn:
+                    id: add_account_own_provider
+                    on_enter: self._on_enter(action_bar, app, root_manager)
+                    on_leave: action_bar.title = app.title; action_bar.left_action_items = []                    

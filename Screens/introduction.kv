@@ -1,0 +1,39 @@
+#: kivy 1.10.1 
+#: import MDFlatButton kivymd.button.MDFlatButton 
+
+<Introduction>: 
+    name: 'introduction' 
+
+    BoxLayout: 
+        orientation: 'vertical' 
+        padding: dp(5), dp(20) 
+
+        Image: 
+            source: 'Screens/resources/imgs/mango.jpg' 
+            size_hint: None, None 
+            size: dp(150), dp(150) 
+            pos_hint: {'center_x': .5} 
+
+        Label: 
+            text: app.sets.string_lang_introduction 
+            markup: True 
+            color: app.sets.text_color 
+            text_size: dp(self.size[0] - 10), self.size[1] 
+            size_hint_y: None 
+            valign: 'top' 
+            height: dp(250) 
+
+        Widget: 
+
+        BoxLayout: 
+
+            MDFlatButton: 
+                text: app.sets.string_lang_create_account 
+                on_release: app.screen_root_manager.current = 'Create account' 
+
+            MDFlatButton: 
+                text: app.sets.string_lang_own_provider 
+                theme_text_color: 'Primary' 
+                on_release: 
+                    app.delete_textfield_and_set_check_in_addaccountroot()
+                    app.screen_root_manager.current = 'Add account own provider'

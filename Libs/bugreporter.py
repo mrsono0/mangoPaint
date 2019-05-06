@@ -32,7 +32,7 @@ class BugReporter(FloatLayout):
     report_readonly = BooleanProperty(False)
     '''오류 텍스트를 편집할 수 있는지 여부 '''
 
-    icon_background = StringProperty('Screens/resources/icons/logo.png')
+    icon_background = StringProperty('Screens/resources/imgs/mango.jpg')
     '''창 배경 이미지 '''
 
     txt_button_report = StringProperty('Report Bug')
@@ -43,7 +43,7 @@ class BugReporter(FloatLayout):
         super(BugReporter, self).__init__(**kwargs)
 
         if not os.path.exists(self.icon_background):
-            self.icon_background = 'Screens/resources/icons/logo.png'
+            self.icon_background = 'Screens/resources/imgs/mango.jpg'
 
     def _close(self, *args):
         from kivy.app import App

@@ -64,9 +64,10 @@ class MangoPaint(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
     title = 'Mango Paint'
-    icon = 'Screens/resources/icons/logo.png'
+    icon = 'Screens/resources/imgs/mango.jpg'
     screen = ObjectProperty(None)
     lang = StringProperty('en')
+
 
 
 # 해당 클래스가 객체화될때 구동되는 섹션으로 관련된 컴포넌트들을 활성화시켜서 실제 running 되기 직전까지 만들어놓음.
@@ -75,13 +76,14 @@ class MangoPaint(App):
         Window.bind(on_keybord=self.events_program)
         Window.soft_input_mode = 'below_target'
 
-        self.list_previous_screens = ['base']
+        self.list_previous_screens = ['introduction']
         self.window = Window
         self.config = ConfigParser()
         self.manager = None
         self.window_language = None
         self.exit_interval = False
         self.name_program = sets.string_lang_title
+        self.sets = sets
 
         self.dict_language = literal_eval(
             open(
@@ -92,21 +94,6 @@ class MangoPaint(App):
             self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'locales')
         )
 
-        self.previous_text = \
-            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
-            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
-            "examples, open the menu and select from the list the desired " \
-            "example or".format(COLOR=get_hex_from_color(
-                self.theme_cls.primary_color))
-        self.previous_text_end = \
-            "for show example apps\n\n" \
-            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
-            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
-            "[/b][/u]\n\n" \
-            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
-            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
-            "[/b][u]".format(COLOR=get_hex_from_color(
-                self.theme_cls.primary_color))        
 
     def get_application_config(self):
         return super(MangoPaint, self).get_application_config(
@@ -132,13 +119,14 @@ class MangoPaint(App):
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
 
         # 메인화면
-        self.screen = StartScreen(
+        self.start_screen = StartScreen(
             title_previous=self.name_program,
             events_callback=self.events_program,
-            # sets=sets
+            sets=sets
         )
 
-        self.manager = self.screen.ids.manager
+        self.screen = self.start_screen
+        self.manager = self.screen.ids.root_manager        
         self.nav_drawer = self.screen.ids.nav_drawer
 
         return self.screen
@@ -193,15 +181,14 @@ class MangoPaint(App):
         print('show_gallery2')
         self.nav_drawer._toggle()
 
-
         # 갤러리 화면
-        self.screen = Gallery(
-            title_previous=self.name_program,
-            events_callback=self.events_program,
-            # sets = sets            
-        )
+        # self.screen = Gallery(
+        #     title_previous=self.name_program,
+        #     events_callback=self.events_program,
+        #     sets = self.sets,
+        # )
 
-        # self.manager.current = 'gallery'
+        # self.screen.load_images()
 
         # self.manager = self.screen.ids.manager
         # self.nav_drawer = self.screen.ids.nav_drawer
@@ -256,7 +243,6 @@ class MangoPaint(App):
                 )
         self.manager.current = 'about'
 
-
     def select_locale(self, *args):
         '''사용 가능한 언어 locale 이  있는 창을 표시합니다.
         응용 프로그램 언어 설정.'''
@@ -289,13 +275,13 @@ class MangoPaint(App):
 
         # 메인 화면에서 백 키 클릭
         if event in (1001, 27):
-            if self.manager.current == 'base':
+            if self.manager.current == 'introduction':
                 self.dialog_exit()
                 return
             try:
                 self.manager.current = self.list_previous_screens.pop()
             except:
-                self.manager.current = 'base'
+                self.manager.current = 'introduction'
             self.screen.ids.action_bar.title = self.title
             self.screen.ids.action_bar.left_action_items = \
                 [['menu', lambda x: self.nav_drawer._toggle()]]
@@ -349,3 +335,32 @@ class MangoPaint(App):
                 auto_dismiss=True
             )
             self.open_dialog = True
+
+
+    def check_len_login_in_textfield(self, instance_textfield):
+        if len(instance_textfield.text) > 20:
+                instance_textfield.text = instance_textfield.text[:20]
+        instance_textfield.message = 'username@conversations.im' if instance_textfield.text == '' else '{}@conversations.im'.format(instance_textfield.text)
+
+    def set_focus_on_textfield(self, interval=0, instance_textfield=None, focus=True):
+        if instance_textfield: instance_textfield.focus = focus
+
+    def set_text_on_textfields(self, interval):
+        add_account_root = self.screen.ids.add_account.ids.add_account_root
+        field_username = add_account_root.ids.username
+        field_password = add_account_root.ids.password
+        field_confirm_password = add_account_root.ids.confirm_password
+        field_username.text = self.screen.ids.create_account.ids.username.text.lower()
+        field_password.focus = True
+        password = self.generate_password()
+        field_password.text = password
+        field_confirm_password.text = password
+
+        Clock.schedule_once(
+            lambda x: self.set_focus_on_textfield(
+                instance_textfield=field_password, focus=False), .5
+        )
+        Clock.schedule_once(
+            lambda x: self.set_focus_on_textfield(
+                instance_textfield=field_username), .5
+        )
