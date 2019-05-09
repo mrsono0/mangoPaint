@@ -7,7 +7,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.vendor.navigationdrawer import NavigationDrawer
 
 
-Builder.load_string ("""
+Builder.load_string("""
 #:import Window kivy.core.window.Window
 <ModifiedNavigationDrawer>:
     canvas:

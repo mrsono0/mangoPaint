@@ -45,12 +45,17 @@ class Translation(Observable):
 
     def switch_lang(self, lang):
         # get the right locales directory, and instanciate a gettext
-        locales = \
-            gettext.translation(self.domain, self.resource_dir, languages=[lang])
+        locales = gettext.translation(self.domain, self.resource_dir, languages=[lang])
         try:
-            self.ugettext = locales.ugettext
+            self.ugettext = locales.gettext            
         except AttributeError:
-        	self.ugettext = locales.gettext
+            self.ugettext = locales.ugettext
+            
+        # Jimmy: 아래 로직이 맞으나 exception 이 발생해서 우선 두 로직을 뒤바꾸어 테스트 하고있음.
+        # try:
+        #     self.ugettext = locales.ugettext
+        # except AttributeError:
+        #     self.ugettext = locales.gettext            
 
         # update all the kv rules attached to this text
         for func, largs, kwargs in self.observers:

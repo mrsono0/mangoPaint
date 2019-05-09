@@ -3,10 +3,6 @@
 
 # 시작 액션 
 
-<MySmartTileWithLabel@SmartTileWithLabel>:
-    mipmap: True
-    font_style: 'Subhead'
-
 
 <Gallery>:
     name: 'gallery'
@@ -47,11 +43,11 @@
 
             MDFlatButton: 
                 text: app.sets.string_lang_create_account 
-                on_release: app.screen_root_manager.current = 'Create account' 
+                on_release: app.StartScreen.root_manager.current = 'Create account' 
 
             MDFlatButton: 
                 text: app.sets.string_lang_own_provider 
                 theme_text_color: 'Primary' 
                 on_release: 
                     app.delete_textfield_and_set_check_in_addaccountroot()
-                    app.screen_root_manager.current = 'Add account own provider'
+                    app.StartScreen.root_manager.current = 'Add account own provider'

@@ -115,10 +115,11 @@ class MangoPaint(App):
 # 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):
 
-        self.set_value_from_config()
+        # self.set_value_from_config()
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
-
+        
         # 메인화면
+        # self.start_screen = StartScreen()
         self.start_screen = StartScreen(
             title_previous=self.name_program,
             events_callback=self.events_program,
@@ -131,17 +132,21 @@ class MangoPaint(App):
 
         return self.screen
 
+
     def load_all_kv_files(self, directory_kv_files):
+        # i = 0
+        print('kv-files: ', os.listdir(directory_kv_files))
         for kv_file in os.listdir(directory_kv_files):
             kv_file = os.path.join(directory_kv_files, kv_file)
+            # i = i+1
+            # print('==========================================================')
+            # print('kv-file: ', str(i), ': ', kv_file)
             if os.path.isfile(kv_file):
-                if not PY2:
-                    with open(kv_file, encoding='utf-8') as kv:
-                        Builder.load_string(kv.read())
-                else:
-                    Builder.load_file(kv_file)
+                with open(kv_file, encoding='utf-8') as kv:
+                    _kv = kv.read()
+                    Builder.load_string(_kv)
+                    # print(_kv)  # kivy 파일들 syntax 오류 점검시 필요
 
- 
 # 분기 프로그램 with events_callback로 함수를 파라미터로 전달하여 구동
 # 연계할 프로그램명을 호출하고 연이어 프로그램명.kv 까지 동작시킬 터널을 뚫은 후,
 # kv파일의 on-이벤트의 events_callback에 파리미터로 전달할 프로그램명을 기술하여
@@ -291,12 +296,12 @@ class MangoPaint(App):
             self.exit_interval += interval
             if self.exit_interval > 5:
                 self.exit_interval = False
-                Clock.unschedule(check_interval_press)
+                # Clock.unschedule(check_interval_press)
 
         if self.exit_interval:
             sys.exit(0)
             
-        Clock.schedule_interval(check_interval_press, 1)
+        # Clock.schedule_interval(check_interval_press, 1)
         toast(self.translation._('Press Back to Exit'))
         
     def on_lang(self, instance, lang):

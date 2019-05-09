@@ -2,24 +2,24 @@
 # python3.5.3,   coding: utf-8
 # Start Screen P/G : main scre
 
-import os
-import sys
-import inspect
+# import os
+# import sys
+# import inspect
 
-from kivy.lang import Builder
+# from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.utils.cropimage import crop_image
-from kivy.uix.gridlayout import GridLayout
+# from kivymd.utils.cropimage import crop_image
+# from kivy.uix.gridlayout import GridLayout
 
-from Programs.introduction import Introduction
-from Programs.addaccount import AddAccount
-from Programs.addaccountown import AddAccountOwn
-from Programs.createaccount import CreateAccount
-from Programs.gallery import Gallery
-from Programs.mystudio import MyStudio
-from Programs.purchase import Purchase
+# from Programs.introduction import Introduction
+# from Programs.addaccount import AddAccount
+# from Programs.addaccountown import AddAccountOwn
+# from Programs.createaccount import CreateAccount
+# from Programs.gallery import Gallery
+# from Programs.mystudio import MyStudio
+# from Programs.purchase import Purchase
 
 
 # root = os.path.split(__file__)[0]
@@ -37,11 +37,8 @@ class StartScreen(BoxLayout):  # 메인화면 프레임과 스크린 메니저 �
     def __init__(self, **kwargs):
         super(StartScreen, self).__init__(**kwargs)
         self.bind(on_keybord=self.events_callback)
-
         events_callback = self.events_callback
         sets = self.sets
-    
-        
 
     # def crop_image_for_tile(self, instance, size, path_to_crop_image):
     #     if not os.path.exists(

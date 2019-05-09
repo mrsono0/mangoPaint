@@ -1,13 +1,63 @@
+#: kivy 1.10.1
+# #: import Toolbar kivymd.toolbar.MDToolbar
+# #: import NoTransition kivy.uix.screenmanager.NoTransition
+
+# <StartScreen>
+#     id: nav_layout
+#     on_state: app.add_name_previous_screen()
+#     MDNavigationDrawer:
+#         id: nav_drawer
+#         NavigationDrawerToolbar:
+#             title: "Navigation Drawer"
+#         NavigationDrawerIconButton:
+#             text: 'Base'
+#         NavigationDrawerIconButton:
+#             text: 'About'
+#             on_release: app.manager.current = 'about'
+#         NavigationDrawerIconButton:
+#             icon: 'close-circle'
+#             text: 'close'
+
+#     BoxLayout:
+#         orientation: 'vertical'
+#         spacing: dp(5)
+
+#         MDToolbar:
+#             id: action_bar
+#             background_color: app.theme_cls.primary_color
+#             title: app.title
+#             left_action_items: [['menu', lambda x: nav_drawer._toggle()]]  # navigation
+#             elevation: 10
+#             md_bg_color: app.theme_cls.primary_color
+
+#         ScreenManager:
+#             id: manager
+
+#             BaseScreen:
+#                 id: base
+
+#             About:
+#                 id: about
+
+
+
+
+
+
+
+
 
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import NavDrawer Programs.navdrawer.NavDrawer
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
 #:import Gallery Programs.gallery.Gallery
 #:import MyStudio Programs.mystudio.MyStudio
 #:import Community Programs.community.Community
 #:import Purchase Programs.purchase.Purchase
 #:import License Programs.license.License
 #:import About Programs.about.About
-#:import NoTransition kivy.uix.screenmanager.NoTransition
+
 
 <StartScreen>
     orientation: 'vertical'
@@ -31,7 +81,7 @@
                 id: root_manager
                 transition: NoTransition()
 
-                Gallery:  # 썸네일
+                Gallery:  # 썸네일  # 초기 화면, 첫번째 순서로 놓으면 current 가 됨.
                     id: gallery
                     on_enter: self._on_enter(mdtool_bar, app)
                     #on_leave:                    
@@ -57,22 +107,3 @@
 
                 About:  # 어바웃
                     id: about
-
-                Introduction:  # 초기 화면 
-                    id: introduction
-                    # Вызывается при выводе текущего Activity на экран.
-                    on_enter: self._on_enter(action_bar, app)
-
-                CreateAccount:
-                    id: create_account
-                    on_enter: self._on_enter(action_bar, app, root_manager)
-
-                AddAccount:
-                    id: add_account
-                    on_enter: self._on_enter(action_bar, app)
-                    on_leave: action_bar.title = app.sets.string_lang_create_account
-
-                AddAccountOwn:
-                    id: add_account_own_provider
-                    on_enter: self._on_enter(action_bar, app, root_manager)
-                    on_leave: action_bar.title = app.title; action_bar.left_action_items = []                    
