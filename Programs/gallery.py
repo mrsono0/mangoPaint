@@ -42,26 +42,33 @@ class Gallery(Screen):
         Clock.schedule_once(self.create_scrollview)
 
     def create_scrollview(self, dt):
-        images = glob.glob('/Users/jarvis/Pictures/*.jpg')
+        images = glob.glob('/home/ubuntu/Pictures/*.jpg')
         # base = ["Tile_{}".format(i) for i in len(images)]
         layout = GridLayout(
             cols=3,
-            row_default_height=(self.width - self.cols * self.spacing[0])/self.cols,
             row_force_default=True,
+            row_default_height=90,
             size_hint_y=None,
-            height=self.minimum_height,
-            padding=(dp(4), dp(4)),
-            spacing=4,
+            spacing=5,
+            padding=5,
         )
         layout.bind(minimum_height=layout.setter("height"))
-        for img in images:
+        for i, img in enumerate(images):
+            # self.crop_image_for_tile(id, id.size, 'Data/cropImages/{}'.format(img))
             layout.add_widget(
                 SmartTile(
+                    id="Tile_{}".format(str(i)),
                     mipmap=True,
-                    font_style='Subhead',
+                    source=img,
                 )
             )
-        scrollview = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
+            print(SmartTile.source)
+
+        scrollview = ScrollView(
+            size_hint=(1, None), 
+            size=(Window.width, Window.height),
+            do_scroll_x=False,
+        )
         scrollview.add_widget(layout)
         self.view.add_widget(scrollview)
 
