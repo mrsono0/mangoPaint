@@ -1,53 +1,44 @@
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
-#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
-# 시작 액션 
+#: kivy 1.10.1
 
 
 <Gallery>:
+    id: gallery
     name: 'gallery'
     orientation: 'vertical'
 
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(5), dp(10)
-        spacing: dp(10)
 
-        Label:
-            size_hint: None, None
-            height: dp(10)
-            width: self.texture_size[0]
-            halign: 'left'
-            color: app.theme_cls.primary_color
-            font_size: '18sp'
-            text: app.translation._('Directory..')
+        ScreenManager:
+            id: manager
 
-        Widget:
+            Screen:
+                name: 'one'
+            
+                MDRaisedButton:
+                    pos_hint: {'center_x': .5, 'center_y': .55}
+                    on_release: manager.current = 'two'
+                    text: 'Open Grid'
+                    
+            Screen:
+                name: 'two'
+                on_enter:
+                    root.crop_image_for_tile(tile_1, tile_1.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_2, tile_2.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_3, tile_3.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_4, tile_4.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_5, tile_5.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_6, tile_6.size, \
+                    'Screens/resources/imgs/mango.jpg')
+                    root.crop_image_for_tile(tile_7, tile_7.size, \
+                    'Screens/resources/imgs/mango.jpg')
 
-
-        Image:
-            source: 'Screens/resources/imgs/mango.jpg'
-            allow_stretch: True
-
-
-        ScrollView:
-
-            Label:
-                font_size: '13sp'
-                text_size: self.width, None
-                size_hint_y: None
-                markup: True
-                height: self.texture_size[1]
-
-        BoxLayout: 
-
-            MDFlatButton: 
-                text: app.sets.string_lang_create_account 
-                on_release: app.StartScreen.root_manager.current = 'Create account' 
-
-            MDFlatButton: 
-                text: app.sets.string_lang_own_provider 
-                theme_text_color: 'Primary' 
-                on_release: 
-                    app.delete_textfield_and_set_check_in_addaccountroot()
-                    app.StartScreen.root_manager.current = 'Add account own provider'
+                ScrollView:
+                    do_scroll_x: False
+                    id: view

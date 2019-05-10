@@ -15,7 +15,7 @@ from ast import literal_eval
 from random import choice
 
 from kivy.app import App
-from kivy.uix.modalview import ModalView
+# from kivy.uix.modalview import ModalView
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.config import ConfigParser
@@ -115,11 +115,10 @@ class MangoPaint(App):
 # 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):
 
-        # self.set_value_from_config()
+        self.set_value_from_config()
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
         
         # 메인화면
-        # self.start_screen = StartScreen()
         self.start_screen = StartScreen(
             title_previous=self.name_program,
             events_callback=self.events_program,
