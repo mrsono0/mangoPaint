@@ -7,15 +7,14 @@
 #     메인화면인 StartScreen 은 베이스화면
 #   - window size: Put the Config settings before all the other imports
 #   - it's too late after importing Window
+#   -
 
 import os
 import sys
 
 from ast import literal_eval
-from random import choice
 
 from kivy.app import App
-# from kivy.uix.modalview import ModalView
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.config import ConfigParser
@@ -24,43 +23,30 @@ from kivy.clock import Clock
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.utils import get_hex_from_color, get_color_from_hex
 
+from kivymd.theming import ThemeManager
+
 from main import __version__
 
 from Programs.startscreen import StartScreen
-from Programs.gallery import Gallery
+
 from Libs.translation import Translation
 from Libs.lists import Lists
-
-from kivymd.theming import ThemeManager
-from kivymd.label import MDLabel
-from kivymd.toast import toast
-
 from Libs.dialogs import card
-
-# from kivy.config import ConfigParser
-
-
 from Libs import settings as sets
-
 
 # from Programs.choice import Choice: Choice
 # from Programs.filter import Filter: CHoice.filter
-
 # from Programs.settings import Settings: Settings
-
 # from Programs.segment import Segment: Segment
-
 # from Programs.mystuio import MyStudio: MyStudio
 # from Programs.paint import Paint: Paint
 # from Programs.purchase import Purchase: Purchase
 
 
+# import시  메모리에 변수 할당 및 초기값 넣어주는 섹션
+# mainscreen = ObjectProperty(None)
+# screen = ObjectProperty(None)
 class MangoPaint(App):
-
-    # import시  메모리에 변수 할당 및 초기값 넣어주는 섹션
-    # mainscreen = ObjectProperty(None)
-    # screen = ObjectProperty(None)
-
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
     title = 'Mango Paint'
@@ -68,15 +54,13 @@ class MangoPaint(App):
     screen = ObjectProperty(None)
     lang = StringProperty('en')
 
-
-
-# 해당 클래스가 객체화될때 구동되는 섹션으로 관련된 컴포넌트들을 활성화시켜서 실제 running 되기 직전까지 만들어놓음.
+    # 해당 클래스가 객체화될때 구동되는 섹션으로 관련된 컴포넌트들을 활성화시켜서 실제 running 되기 직전까지 만들어놓음.
     def __init__(self, **kwargs):
         super(MangoPaint, self).__init__(**kwargs)
         Window.bind(on_keybord=self.events_program)
         Window.soft_input_mode = 'below_target'
 
-        self.list_previous_screens = ['introduction']
+        self.list_previous_screens = ['gallery']
         self.window = Window
         self.config = ConfigParser()
         self.manager = None
@@ -94,7 +78,6 @@ class MangoPaint(App):
             self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'locales')
         )
 
-
     def get_application_config(self):
         return super(MangoPaint, self).get_application_config(
                         '{}/mangopaint.ini'.format(self.directory))
@@ -110,27 +93,21 @@ class MangoPaint(App):
         config.adddefaultsection('General')
         config.setdefault('General', 'language', 'en')
 
-
-# build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
-# 단, 일반 프로그램은 build 함수를 만들지 않는다.
+    # build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
+    # 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):
-
         self.set_value_from_config()
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
-        
-        # 메인화면
+        # 메인 베이스가 되는 화면, 각 서브화면들은 screenmanager 로 switch 하면서 사용함
         self.start_screen = StartScreen(
             title_previous=self.name_program,
             events_callback=self.events_program,
             sets=sets
         )
-
         self.screen = self.start_screen
-        self.manager = self.screen.ids.root_manager        
+        self.manager = self.screen.ids.root_manager
         self.nav_drawer = self.screen.ids.nav_drawer
-
         return self.screen
-
 
     def load_all_kv_files(self, directory_kv_files):
         # i = 0
@@ -146,10 +123,10 @@ class MangoPaint(App):
                     Builder.load_string(_kv)
                     # print(_kv)  # kivy 파일들 syntax 오류 점검시 필요
 
-# 분기 프로그램 with events_callback로 함수를 파라미터로 전달하여 구동
-# 연계할 프로그램명을 호출하고 연이어 프로그램명.kv 까지 동작시킬 터널을 뚫은 후,
-# kv파일의 on-이벤트의 events_callback에 파리미터로 전달할 프로그램명을 기술하여
-# 최종 원하는 프로그램을 기동할수 있도록 하는 패턴함수임.
+    # 분기 프로그램 with events_callback로 함수를 파라미터로 전달하여 구동
+    # 연계할 프로그램명을 호출하고 연이어 프로그램명.kv 까지 동작시킬 터널을 뚫은 후,
+    # kv파일의 on-이벤트의 events_callback에 파리미터로 전달할 프로그램명을 기술하여
+    # 최종 원하는 프로그램을 기동할수 있도록 하는 패턴함수임.
     def events_program(self, *args):
         '''프로그램 이벤트 처리'''
         print(args)
@@ -163,9 +140,9 @@ class MangoPaint(App):
             except AttributeError:
                 event = args[1]
 
-        if PY2:
-            if isinstance(event, unicode):
-                event = event.encode('utf-8')                
+        # if PY2:
+        #     if isinstance(event, unicode):
+        #         event = event.encode('utf-8')
 
         if event == sets.string_lang_exit_key:
             self.exit_program()
@@ -184,35 +161,21 @@ class MangoPaint(App):
     def show_gallery(self, *args):
         print('show_gallery2')
         self.nav_drawer._toggle()
-
-        # 갤러리 화면
-        # self.screen = Gallery(
-        #     title_previous=self.name_program,
-        #     events_callback=self.events_program,
-        #     sets = self.sets,
-        # )
-
-        # self.screen.load_images()
-
-        # self.manager = self.screen.ids.manager
-        # self.nav_drawer = self.screen.ids.nav_drawer
-
+        self.manager.current = 'gallery'
         return self.screen
-
-
         # self.screen.ids.action_bar.title = \
         #     self.translation._('MIT LICENSE')
 
     def show_mystudio(self, *args):
-        print('show_mystudio2')        
+        print('show_mystudio2')
         pass
 
     def show_community(self, *args):
-        print('show_community2')        
+        print('show_community2')
         pass
 
     def show_purchase(self, *args):
-        print('show_purchase2')        
+        print('show_purchase2')
         pass
 
     def show_license(self, *args):
@@ -274,18 +237,16 @@ class MangoPaint(App):
             )
         self.window_language.open()
 
+    # 메인 화면에서 백 키 클릭시 사용
     def back_screen(self, event=None):
-        ''' screen manager '''
-
-        # 메인 화면에서 백 키 클릭
         if event in (1001, 27):
-            if self.manager.current == 'introduction':
+            if self.manager.current == 'gallery':
                 self.dialog_exit()
                 return
             try:
                 self.manager.current = self.list_previous_screens.pop()
             except:
-                self.manager.current = 'introduction'
+                self.manager.current = 'gallery'
             self.screen.ids.action_bar.title = self.title
             self.screen.ids.action_bar.left_action_items = \
                 [['menu', lambda x: self.nav_drawer._toggle()]]
@@ -295,14 +256,12 @@ class MangoPaint(App):
             self.exit_interval += interval
             if self.exit_interval > 5:
                 self.exit_interval = False
-                # Clock.unschedule(check_interval_press)
-
+                Clock.unschedule(check_interval_press)
         if self.exit_interval:
             sys.exit(0)
-            
         # Clock.schedule_interval(check_interval_press, 1)
-        toast(self.translation._('Press Back to Exit'))
-        
+        # toast(self.translation._('Press Back to Exit'))
+
     def on_lang(self, instance, lang):
         self.translation.switch_lang(lang)
 
@@ -328,7 +287,7 @@ class MangoPaint(App):
             dismiss()
 
         if not self.open_dialog:
-            KDialog(answer_callback=answer_callback, 
+            KDialog(answer_callback=answer_callback,
                     on_dismiss=dismiss,
                     separator_color=sets.separator_color,
                     title_color=get_color_from_hex(sets.theme_text_black_color),
@@ -339,32 +298,3 @@ class MangoPaint(App):
                 auto_dismiss=True
             )
             self.open_dialog = True
-
-
-    def check_len_login_in_textfield(self, instance_textfield):
-        if len(instance_textfield.text) > 20:
-                instance_textfield.text = instance_textfield.text[:20]
-        instance_textfield.message = 'username@conversations.im' if instance_textfield.text == '' else '{}@conversations.im'.format(instance_textfield.text)
-
-    def set_focus_on_textfield(self, interval=0, instance_textfield=None, focus=True):
-        if instance_textfield: instance_textfield.focus = focus
-
-    def set_text_on_textfields(self, interval):
-        add_account_root = self.screen.ids.add_account.ids.add_account_root
-        field_username = add_account_root.ids.username
-        field_password = add_account_root.ids.password
-        field_confirm_password = add_account_root.ids.confirm_password
-        field_username.text = self.screen.ids.create_account.ids.username.text.lower()
-        field_password.focus = True
-        password = self.generate_password()
-        field_password.text = password
-        field_confirm_password.text = password
-
-        Clock.schedule_once(
-            lambda x: self.set_focus_on_textfield(
-                instance_textfield=field_password, focus=False), .5
-        )
-        Clock.schedule_once(
-            lambda x: self.set_focus_on_textfield(
-                instance_textfield=field_username), .5
-        )

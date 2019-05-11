@@ -3,7 +3,7 @@
 # license.py
 # ------------------------------------------------------------------------
 # Notice:
-#   - 
+#   -
 
 from kivy.uix.screenmanager import Screen
 

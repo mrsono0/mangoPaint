@@ -12,19 +12,14 @@ import sys
 import traceback
 
 from kivy.config import Config
-
+#  윈도우 설정값이 전 프로그램의 가장 상단에 위치해야 설정값이 적용됨.
 Config.set('kivy', 'keyboard_mode', 'system')
 Config.set('graphics', 'width', '350')
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', 0)
 
-
 from kivymd.theming import ThemeManager
-from kivymd.utils.cropimage import crop_image
-from kivymd.icon_definitions import md_icons
 # from kivymd.material_resources import DEVICE_TYPE
-
-from Libs import settings as sets
 
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
@@ -38,7 +33,6 @@ try:
     import kivy
     kivy.require('1.10.0')
 
-    from kivymd.theming import ThemeManager
     from Libs.bugreporter import BugReporter
 except Exception:
     traceback.print_exc(file=open(os.path.join(directory, 'error.log'), 'w'))
@@ -94,9 +88,9 @@ def main():
             except Exception:
                 sys.exit(1)
         report = BugReporter(
-            callback_report=callback_report, 
+            callback_report=callback_report,
             txt_report=text_error,
-            icon_background=os.path.join('Screens', 'resources', 'imgs', 'mango.jpg') # easy 아이콘 디렉토리 찾아 수정할 것
+            icon_background=os.path.join('Screens', 'resources', 'imgs', 'mango.jpg')  # easy 아이콘 디렉토리 찾아 수정할 것
         )
 
         if app:
@@ -104,11 +98,9 @@ def main():
                 app.screen.clear_widgets()
                 app.screen.add_widget(report)
             except AttributeError:
-            	create_error_monitor()
+                create_error_monitor()
         else:
             create_error_monitor()
-
-
 
 
 if __name__ == ('__main__'):

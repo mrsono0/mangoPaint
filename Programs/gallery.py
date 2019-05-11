@@ -62,7 +62,6 @@ class Gallery(Screen):
                     source=img,
                 )
             )
-            print(SmartTile.source)
 
         scrollview = ScrollView(
             size_hint=(1, None), 
@@ -79,10 +78,10 @@ class Gallery(Screen):
     def callback(self, obj, touch):
         print(obj.source)
 
-    def crop_image_for_tile(self, instance, size, path_to_crop_image):
-        if not os.path.exists(os.path.join(directory, path_to_crop_image)):
-            size = (int(size[0]), int(size[1]))
-            path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
-            crop_image(size, path_to_origin_image, path_to_crop_image)
-        instance.source = path_to_crop_image    
+    # def crop_image_for_tile(self, instance, size, path_to_crop_image):
+    #     if not os.path.exists(os.path.join(directory, path_to_crop_image)):
+    #         size = (int(size[0]), int(size[1]))
+    #         path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
+    #         crop_image(size, path_to_origin_image, path_to_crop_image)
+    #     instance.source = path_to_crop_image    
     
