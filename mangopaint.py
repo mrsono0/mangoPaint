@@ -78,25 +78,29 @@ class MangoPaint(App):
             self.lang, 'Ttest', os.path.join(self.directory, 'Libs', 'locales')
         )
 
+    # application 레벨 설정값 정보 관리
     def get_application_config(self):
         return super(MangoPaint, self).get_application_config(
-                        '{}/mangopaint.ini'.format(self.directory))
+                        '{}/Libs/mangopaint.ini'.format(self.directory))
 
     def set_value_from_config(self):
         ''' mangopaint.ini 로 셋팅값 넣기 '''
-
-        self.config.read(os.path.join(self.directory, 'mangopaint.ini'))
+        self.config.read(os.path.join(self.directory, 'Libs/mangopaint.ini'))
         self.lang = self.config.get('General', 'language')
 
     def build_config(self, config):
-        ''' mangopaint.ini 설정값 읽어오기 '''
+        ''' mangopaint.ini 기본 설정값 만들기 '''
         config.adddefaultsection('General')
         config.setdefault('General', 'language', 'en')
+
 
     # build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
     # 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):
+        # mangopaint.ini 의 저장된 설정값들을 셋팅하기
         self.set_value_from_config()
+        self.title = sets.string_lang_title[:-1]
+        self.icon = "Screens/resources/icons/logo.png"
         self.load_all_kv_files(os.path.join(self.directory, 'Screens'))
         # 메인 베이스가 되는 화면, 각 서브화면들은 screenmanager 로 switch 하면서 사용함
         self.start_screen = StartScreen(
@@ -163,8 +167,7 @@ class MangoPaint(App):
         self.nav_drawer._toggle()
         self.manager.current = 'gallery'
         return self.screen
-        # self.screen.ids.action_bar.title = \
-        #     self.translation._('MIT LICENSE')
+
 
     def show_mystudio(self, *args):
         print('show_mystudio2')

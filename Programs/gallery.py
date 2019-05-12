@@ -25,11 +25,6 @@ from kivymd.utils.cropimage import crop_image
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
 
-class MyImage(Image):
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-            print(self.source)
-
 
 class Gallery(Screen):
 
@@ -43,7 +38,6 @@ class Gallery(Screen):
 
     def create_scrollview(self, dt):
         images = glob.glob('/home/ubuntu/Pictures/*.jpg')
-        # base = ["Tile_{}".format(i) for i in len(images)]
         layout = GridLayout(
             cols=3,
             row_force_default=True,
@@ -54,12 +48,12 @@ class Gallery(Screen):
         )
         layout.bind(minimum_height=layout.setter("height"))
         for i, img in enumerate(images):
-            # self.crop_image_for_tile(id, id.size, 'Data/cropImages/{}'.format(img))
             layout.add_widget(
                 SmartTile(
                     id="Tile_{}".format(str(i)),
                     mipmap=True,
                     source=img,
+                    on_release=self.callback,
                 )
             )
 
@@ -71,17 +65,8 @@ class Gallery(Screen):
         scrollview.add_widget(layout)
         self.view.add_widget(scrollview)
 
-    # def _on_enter(self, instance_toolbar, instance_program):
-    #     instance_toolbar.left_action_items = []
-    #     instance_toolbar.title = instance_program.title
-
-    def callback(self, obj, touch):
+    def callback(self, obj):
         print(obj.source)
+        self.manager.current = 'effects'
 
-    # def crop_image_for_tile(self, instance, size, path_to_crop_image):
-    #     if not os.path.exists(os.path.join(directory, path_to_crop_image)):
-    #         size = (int(size[0]), int(size[1]))
-    #         path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
-    #         crop_image(size, path_to_origin_image, path_to_crop_image)
-    #     instance.source = path_to_crop_image    
     

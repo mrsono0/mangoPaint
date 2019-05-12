@@ -1,0 +1,24 @@
+#: kivy 1.10.1
+
+#:import MDFlatButton kivymd.button.MDFlatButton
+
+<Effects>:
+    view: view
+    name: 'effects'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            MDRectangleFlatButton: # Preview button
+                text: '<'
+                pos_hint: {'center_x': 0.5, 'center_y': .55}
+            Image:
+            MDRectangleFlatButton: # next button
+                text: '>'
+                pos_hint: {'center_x': 0.5, 'center_y': .55}
+
+        BoxLayout:
+            ScrollView:  # MDRectangleFlatButton 으로 필터들 스크롤
+                do_scroll_y: False
+                id: view
