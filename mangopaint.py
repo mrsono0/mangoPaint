@@ -93,7 +93,6 @@ class MangoPaint(App):
         config.adddefaultsection('General')
         config.setdefault('General', 'language', 'en')
 
-
     # build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
     # 단, 일반 프로그램은 build 함수를 만들지 않는다.
     def build(self):

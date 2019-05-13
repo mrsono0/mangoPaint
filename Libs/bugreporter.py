@@ -101,11 +101,13 @@ Builder.load_string('''
             spacing: 2
             MDFlatButton:
                 text: root.txt_button_close
+                width: root.width * .35    # 버튼 폭 조정
                 theme_text_color: 'Custom'
                 text_color: 1, 1, 1, 1
                 on_release: root._close()
             MDFlatButton:
                 text: root.txt_button_report
+                width: root.width *.65    # 버튼 폭 조정
                 theme_text_color: 'Custom'
                 text_color: 1, 1, 1, 1
                 on_release:

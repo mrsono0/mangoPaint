@@ -5,25 +5,16 @@
 # purpose:
 #   메인화면 프레임에 갤러리 화면을 얹어 구동시킴.
 
-import os
-import sys
 import glob
 
-from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
-from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty, StringProperty
 
 from kivymd.imagelists import SmartTile
-from kivymd.utils.cropimage import crop_image
-
-
-directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
-
 
 
 class Gallery(Screen):
@@ -37,7 +28,8 @@ class Gallery(Screen):
         Clock.schedule_once(self.create_scrollview)
 
     def create_scrollview(self, dt):
-        images = glob.glob('/home/ubuntu/Pictures/*.jpg')
+        # images = glob.glob('/home/jarvis/Pictures/*.jpg')
+        images = glob.glob('/Users/jarvis/Pictures/*.jpg')
         layout = GridLayout(
             cols=3,
             row_force_default=True,
@@ -53,12 +45,12 @@ class Gallery(Screen):
                     id="Tile_{}".format(str(i)),
                     mipmap=True,
                     source=img,
-                    on_release=self.callback,
+                    on_release=self.callback,  # 모바일에서는 on_touch_down 이벤트로 ???
                 )
             )
 
         scrollview = ScrollView(
-            size_hint=(1, None), 
+            size_hint=(1, None),
             size=(Window.width, Window.height),
             do_scroll_x=False,
         )
@@ -68,5 +60,3 @@ class Gallery(Screen):
     def callback(self, obj):
         print(obj.source)
         self.manager.current = 'effects'
-
-    
