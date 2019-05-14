@@ -22,6 +22,7 @@ class Gallery(Screen):
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
     title_previous = StringProperty('')  # 액션바
+    selectedImage = StringProperty('')    
 
     def __init__(self, **kwargs):
         super(Gallery, self).__init__(**kwargs)
@@ -57,6 +58,13 @@ class Gallery(Screen):
         scrollview.add_widget(layout)
         self.view.add_widget(scrollview)
 
+    def starttimer(self):
+        self.timer = Clock.schedule_once(self.screen_to_effects, 1)
+
+    def screen_to_effects(self, dt):
+        self.manager.current = 'effects'            
+
     def callback(self, obj):
         print(obj.source)
-        self.manager.current = 'effects'
+        self.selectedImage = obj.source
+        

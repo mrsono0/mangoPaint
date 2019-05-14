@@ -1,0 +1,35 @@
+ScreenManager:
+    MenuScreen:
+    FirstScreen:
+    SecondScreen:
+    ThirdScreen:
+    FourthScreen:
+<MenuScreen>:
+    Button:
+        text: 'start'
+        on_press: app.root.current = 'first_screen'
+<FirstScreen>:
+    first_screen: first_screen
+    name: 'first_screen'
+    on_enter: root.starttimer()
+    Label:
+        id: first_screen
+        text: "Hi I'm The First Screen"
+<SecondScreen>:
+    name: 'second_screen'
+    on_enter: root.starttimer()
+    Label:
+        id: second_screen
+        text: "Hi I'm The Second Screen"
+<ThirdScreen>:
+    name: 'third_screen'
+    on_enter: root.starttimer()
+    Label:
+        id: third_screen
+        text: "Hi I'm The Third Screen"
+<FourthScreen>:
+    name: 'fourth_screen'
+    on_enter: root.starttimer()
+    Label:
+        id: fourth_screen
+        text: "Hi I'm The Fourth Screen"

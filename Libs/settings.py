@@ -13,7 +13,7 @@ prog_path = os.path.split(os.path.abspath(sys.argv[0]))[0]
 # _prog_path = os.path.abspath('.')
 
 
-if not os.path.exists('{}/Libs/mangpaint.ini'.format(prog_path)) \
+if not os.path.exists('{}/Libs/mangopaint.ini'.format(prog_path)) \
         or open('{}/Libs/mangopaint.ini'.format(prog_path)).read() == '':
     language = 'english'
     theme = 'default'

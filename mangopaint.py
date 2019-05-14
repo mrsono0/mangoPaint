@@ -91,7 +91,7 @@ class MangoPaint(App):
     def build_config(self, config):
         ''' mangopaint.ini 기본 설정값 만들기 '''
         config.adddefaultsection('General')
-        config.setdefault('General', 'language', 'en')
+        config.setdefault('General', 'language', 'English')
 
     # build 는 App 클래스에서는 App.run()으로 invoke 되며, 메인프로그램을 스타트 시킴.
     # 단, 일반 프로그램은 build 함수를 만들지 않는다.
@@ -167,6 +167,11 @@ class MangoPaint(App):
         self.manager.current = 'gallery'
         return self.screen
 
+    def show_effect(self, *args):
+        print('show_effect2')
+        self.nav_drawer._toggle()
+        self.manager.current = 'effects'
+        return self.screen
 
     def show_mystudio(self, *args):
         print('show_mystudio2')
