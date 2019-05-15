@@ -30,17 +30,12 @@ class Effects(Screen):
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
     title_previous = StringProperty('')  # 액션바
-    selectedImage = StringProperty('')
 
     def __init__(self, **kwargs):
         super(Effects, self).__init__(**kwargs)
-        Clock.schedule_once(self.create_effectview)
 
-
-
-
-    # def create_effectview(self, dt):
-    #     pass
+    def create_effects(self, selectedImagePath):
+        self.ids.myimage.source = selectedImagePath
 
 
 

@@ -33,7 +33,6 @@
             ScreenManager:
                 id: root_manager
                 transition: NoTransition()
-                selectedImagePath: SelectedImagePath
 
                 Gallery:  # 썸네일  # 초기 화면, 첫번째 순서로 놓으면 current 가 됨.
                     id: gallery
@@ -42,6 +41,7 @@
 
                 Effects:  # 사진 편집
                     id: effects
+                    selectedImagePath: gallery.selectedImagePath                    
                     # on_enter: self._on_enter(mdtool_bar, app)
                     # on_leave: 
                     #    mdtool_bar.title = app.title; mdtool_bar.left_action_items = []                 

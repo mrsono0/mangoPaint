@@ -7,7 +7,7 @@ import sys
 
 from kivy.config import ConfigParser
 
-select_locale = {'한글': 'korean', 'English': 'english'}
+select_locale = {'한글': 'kr', 'English': 'en'}
 
 prog_path = os.path.split(os.path.abspath(sys.argv[0]))[0]
 # _prog_path = os.path.abspath('.')
@@ -15,7 +15,7 @@ prog_path = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
 if not os.path.exists('{}/Libs/mangopaint.ini'.format(prog_path)) \
         or open('{}/Libs/mangopaint.ini'.format(prog_path)).read() == '':
-    language = 'english'
+    language = 'en'
     theme = 'default'
 else:
     config = ConfigParser()

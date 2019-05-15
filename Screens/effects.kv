@@ -3,9 +3,12 @@
 <Effects>:
     # view: view
     name: 'effects'
+    on_pre_enter: self.create_effects(self.parent.get_screen('gallery').selectedImagePath)
 
     Image:
         id: myimage
+        source: ''
+        allow_stretch: True        
 
     BoxLayout:
         orientation: 'horizontal'
