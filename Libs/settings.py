@@ -7,7 +7,8 @@ import sys
 
 from kivy.config import ConfigParser
 
-select_locale = {'한글': 'kr', 'English': 'en'}
+# select_locale = {'한글': 'kr', 'English': 'en'}
+select_locale = {'kr': '한글', 'en': 'English'}
 
 prog_path = os.path.split(os.path.abspath(sys.argv[0]))[0]
 # _prog_path = os.path.abspath('.')

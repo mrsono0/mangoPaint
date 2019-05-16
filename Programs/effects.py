@@ -8,6 +8,8 @@
 
 import os
 import sys
+import math
+
 
 from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
@@ -20,11 +22,14 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.config import ConfigParser
 
 from kivymd.imagelists import SmartTile
 from kivymd.utils.cropimage import crop_image
 
+from Libs.hover import MouseOver
 
+directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
 class Effects(Screen):
     events_callback = ObjectProperty(None)
@@ -33,95 +38,83 @@ class Effects(Screen):
 
     def __init__(self, **kwargs):
         super(Effects, self).__init__(**kwargs)
+        self.pos = (0,0)
+        self.size_hint = (1,1)
+        self.effects_list = []
+        self.config = ConfigParser()
+
+    # effect 효과들 목록 얻어오기   
+    def _get_effects(self):
+
+        self.config.read(os.path.join(directory, 'Libs/mangopaint.ini'))        
+        _items = self.config.items('Effects')
+        for key, _item in _items:
+            path_sh = _item.split()
+            self.effects_list.extend(path_sh)        
 
     def create_effects(self, selectedImagePath):
+        self._get_effects()
+        # self.effects_bar = EffectsBar(meta=self.effects_list)
         self.ids.myimage.source = selectedImagePath
+        # self.add_widget(self.effects_bar, index=0)
+
+    # effects bar 업데이트
+    def update_effects_bar(self):
+        self.effects_bar.update()
 
 
 
+class EffectsBar(BoxLayout):
+    """ Dynamic amount of effects images that can be selected"""
 
-# class EffectsBar(BoxLayout):
-#     """ Dynamic amount of effects images that can be selected"""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.height = 100
+        self.size_hint = (1, None)
+        self.pos = (0, 0)
+        self.images = 10
+        # self.update()
 
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
-#         self.height = 100
-#         self.size_hint = (1, None)
-#         self.pos = (0, 0)
-#         self.images = 10
-#         self.update()
-
-#     # def update(self):
-#     #     self.clear_widgets()
-#     #     for i in range(self.meta.pos - int(math.floor(self.images/2)),
-#     #                    self.meta.pos + int(math.ceil(self.images/2))):
-#     #         image_pos = i
-#     #         if image_pos < 0:
-#     #             image_pos = len(self.meta.list) + image_pos
-#     #         if image_pos >= len(self.meta.list):
-#     #             image_pos = image_pos - len(self.meta.list)
-#     #         img = MenuImage(source=os.path.join(self.meta.base,
-#     #                                             self.meta.list[image_pos].image),
-#     #                         image_pos=image_pos,
-#     #                         selected=True if image_pos == self.meta.pos else False)
-#     #         self.add_widget(img)
-
-
-# class EffectsImage(ButtonBehavior, Image):
-#     """ Preview image. The current one will always have full opacity, 
-#         otherwise only ones being hovered over will be full opacity. """
-
-#     def __init__(self, image_pos=0, selected=False, **kwargs):
-#         self.image_pos = image_pos
-#         self.selected = selected
-#         super().__init__(**kwargs)
-#         self.width = 100
-#         if not self.selected:
-#             self.opacity = 0.6
-#         self.size_hint = None, None
-
-#     def on_press(self):
-#         if not self.selected:
-#             self.parent.parent.change_to_image(self.image_pos)
+    def update(self):
+        self.clear_widgets()
+        for i in range(self.meta.pos - int(math.floor(self.images/2)),
+                       self.meta.pos + int(math.ceil(self.images/2))):
+            image_pos = i
+            if image_pos < 0:
+                image_pos = len(self.meta.list) + image_pos
+            if image_pos >= len(self.meta.list):
+                image_pos = image_pos - len(self.meta.list)
+            img = EffectsImage(source=os.path.join(self.meta.base,
+                                                self.meta.list[image_pos].image),
+                            image_pos=image_pos,
+                            selected=True if image_pos == self.meta.pos else False)
+            self.add_widget(img)
 
 
+class EffectsImage(ButtonBehavior, Image):
+    """ effectsbar images. The current one will always have full opacity, 
+        otherwise only ones being hovered over will be full opacity. """
 
-# class MyImage(Image):
+    def __init__(self, image_pos=0, selected=False, **kwargs):
+        self.image_pos = image_pos
+        self.selected = selected
+        super().__init__(**kwargs)
+        self.width = 100
+        if not self.selected:
+            self.opacity = 0.6
+        self.size_hint = None, None
 
-#     def __init__(self, meta=None, preview_bar=None, **kwargs):
-#         self.meta = meta
-#         if not preview_bar:
-#             raise PyViewError("Preview_bar must be provided")
-#         self.preview_bar = preview_bar
-#         super().__init__(source=self.gen_image(), **kwargs)
-#         self.pos = (0, 100)
-#         self.size_hint_x = 1
-#         self.size_hint_y = None
+    def on_press(self):
+        if not self.selected:
+            self.parent.parent.change_to_image(self.image_pos)
 
+    def on_hover(self):
+        if not self.selected:
+            self.opacity = 1.0
 
-
-
-
-
-
-
-# class MainViewer(FloatLayout): # Effects 화면 전체
-
-#     def __init__(self, base_dir=r"/home/james/Pictures",
-#                  delete_dir=r"/home/james/delete", **kwargs):
-#         super().__init__(**kwargs)
-
-
-#         # effects_view: 하단의 각종 effects 를 선택할수 있는 scroll
-#         self.effects_bar = EffectsBar(meta=self.image_data)
-#         self.image = Image(meta=self.image_data, effects_bar=self.preview) # meta data에서 읽어오는 방식인데 바꿔야함
-
-
-#         self.add_widget(self.image, index=2)
-#         self.add_widget(self.effects_bar, index=0)
-
-#     def update_effects_bar(self):
-#         self.effects_bar.update()
+    def on_exit(self):
+        if not self.selected:
+            self.opacity = 0.6
 
 
 
