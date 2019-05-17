@@ -5,6 +5,7 @@
 # purpose:
 #   메인화면 프레임에 갤러리 화면을 얹어 구동시킴.
 
+import os
 import glob
 
 from kivy.uix.gridlayout import GridLayout
@@ -29,8 +30,10 @@ class Gallery(Screen):
         Clock.schedule_once(self.create_scrollview)
 
     def create_scrollview(self, dt):
-        images = glob.glob('/home/ubuntu/Pictures/*.jpg')
-        # images = glob.glob('/Users/jarvis/Pictures/*.jpg')
+        images = []
+        for ext in ('*.gif', '*.png', '*.jpg', '*.jpeg'):
+            images.extend(sorted(glob.glob(os.path.join('/Users/jarvis/Pictures', ext)), key=os.path.getmtime))
+            # images.extend(sorted(glob.glob(os.path.join('/home/ubuntu/Pictures', ext)), key=os.path.getmtime))            
         layout = GridLayout(
             cols=3,
             row_force_default=True,

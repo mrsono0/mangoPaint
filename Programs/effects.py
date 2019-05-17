@@ -9,12 +9,9 @@
 import os
 import sys
 import math
+from box import Box
 
-
-from kivy.metrics import dp
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
@@ -31,6 +28,7 @@ from Libs.hover import MouseOver
 
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
+# Effects 초기 화면 클래스
 class Effects(Screen):
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
@@ -40,40 +38,46 @@ class Effects(Screen):
         super(Effects, self).__init__(**kwargs)
         self.pos = (0,0)
         self.size_hint = (1,1)
-        self.effects_list = []
         self.config = ConfigParser()
+        self.effects_data = Box()
+        self.effects_data.pos = 0
+        self.effects_data.list = []
 
-    # effect 효과들 목록 얻어오기   
+
+    # effect 효과들의 대상 목록 얻어오기   
     def _get_effects(self):
-
         self.config.read(os.path.join(directory, 'Libs/mangopaint.ini'))        
         _items = self.config.items('Effects')
-        for key, _item in _items:
-            path_sh = _item.split()
-            self.effects_list.extend(path_sh)        
-
+        for i, (key, _item) in enumerate(_items):
+            img_sh = _item.split(',')
+            _data = {'order': i, 'image': img_sh[0], 'shell': img_sh[1]}
+            self.effects_data.list.append(_data)
+        
+    # effects.kv 에서 호출하는 effects 화면 생성하기
     def create_effects(self, selectedImagePath):
         self._get_effects()
-        # self.effects_bar = EffectsBar(meta=self.effects_list)
+        self.effects_data.list.sort(key=lambda x: x['order'], reverse=True)
+        self.effectsbar = EffectsBar(meta=self.effects_data)
         self.ids.myimage.source = selectedImagePath
-        # self.add_widget(self.effects_bar, index=0)
+        self.add_widget(self.effectsbar, index=0)
 
-    # effects bar 업데이트
-    def update_effects_bar(self):
-        self.effects_bar.update()
+    # effectsbar 화면 랜더링
+    def update_effectsbar(self):
+        self.effectsbar.update()
 
 
-
+# 스크린 하단에 위치해있는 effects 리스트 클래스
 class EffectsBar(BoxLayout):
     """ Dynamic amount of effects images that can be selected"""
 
-    def __init__(self, **kwargs):
+    def __init__(self, meta=None, **kwargs):
+        self.meta = meta
         super().__init__(**kwargs)
         self.height = 100
         self.size_hint = (1, None)
         self.pos = (0, 0)
-        self.images = 10
-        # self.update()
+        self.images = 10  # effectsbar 초기화면에 들어가는 effect 이미지 갯수
+        self.update()
 
     def update(self):
         self.clear_widgets()
@@ -84,13 +88,14 @@ class EffectsBar(BoxLayout):
                 image_pos = len(self.meta.list) + image_pos
             if image_pos >= len(self.meta.list):
                 image_pos = image_pos - len(self.meta.list)
-            img = EffectsImage(source=os.path.join(self.meta.base,
+            img = EffectsImage(source=os.path.join(directory, 'Effects',
                                                 self.meta.list[image_pos].image),
                             image_pos=image_pos,
                             selected=True if image_pos == self.meta.pos else False)
             self.add_widget(img)
 
 
+# effectsbar 에 들어가는 effects들의 이미지버튼들 클래스
 class EffectsImage(ButtonBehavior, Image):
     """ effectsbar images. The current one will always have full opacity, 
         otherwise only ones being hovered over will be full opacity. """
