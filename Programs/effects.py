@@ -9,6 +9,7 @@
 import os
 import sys
 import math
+from subprocess import Popen, PIPE, STDOUT
 from box import Box
 
 from kivy.uix.boxlayout import BoxLayout
@@ -44,13 +45,13 @@ class Effects(Screen):
         self.effects_data.list = []
 
 
-    # effect 효과들의 대상 목록 얻어오기   
+    # effect 효과의 타이틀명, 샘플이지미파일, 효과 프로그램명 정보 읽어오기  
     def _get_effects(self):
         self.config.read(os.path.join(directory, 'Libs/mangopaint.ini'))        
         _items = self.config.items('Effects')
         for i, (key, _item) in enumerate(_items):
             img_sh = _item.split(',')
-            _data = {'order': i, 'image': img_sh[0], 'shell': img_sh[1]}
+            _data = {'key': key, 'image': img_sh[0], 'pgm': img_sh[1], 'order': img_sh[2] }
             self.effects_data.list.append(_data)
         
     # effects.kv 에서 호출하는 effects 화면 생성하기
@@ -65,6 +66,53 @@ class Effects(Screen):
     def update_effectsbar(self):
         self.effectsbar.update()
 
+    # ###########################################
+    # effect 효과를 적용하도록 화면 변경하가
+    # ###########################################
+    def change_to_image(self, image_pos):
+        # self.image_data.pos = image_pos
+        _data = self.effects_data.list[image_pos]
+        cmd = []
+
+        if _data.key == 'sketch':
+            args = self.sketch_arguments(image_pos)
+        elif _data.key == 'water_color':
+            args = self.sketch_arguments(image_pos)
+        elif _data.key == 'oil_color':
+            args = self.sketch_arguments(image_pos)
+        else: 
+            args = self.sketch_arguments(image_pos)
+
+        cmd.append(sys.executable or 'python3')
+        cmd.append(args)
+        print(cmd[0] + cmd[1])
+        process = Popen(cmd[0] + cmd[1], shell=True, stdout=PIPE, stderr=STDOUT)
+        out, err = process.communicate()
+        errcode = process.returncode
+
+        # self.image.source = self.image.gen_image()
+        # self.image.reload()
+
+    def choice_effect(self):
+        pass
+
+    def run_effect(self):
+        pass
+
+    def save_temp(self):
+        pass
+
+    def sketch_arguments(self, image_pos):
+        # python3 edge_detecting.py --content=$1 --output=$2 --blurred=$3
+        # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "mosaic_edge_result.png" --blurred 3
+        args = " {} --content {} --blurred {}".format(self.effects_data.list[image_pos].pgm, self.ids.myimage.source, '3')
+        return args
+
+        
+    # def gen_image(self):
+    #     return os.path.join(directory, 'Effects',
+    #                         self.meta.list[image_pos].image)
+
 
 # 스크린 하단에 위치해있는 effects 리스트 클래스
 class EffectsBar(BoxLayout):
@@ -73,16 +121,15 @@ class EffectsBar(BoxLayout):
     def __init__(self, meta=None, **kwargs):
         self.meta = meta
         super().__init__(**kwargs)
-        self.height = 100
+        self.height = 70
         self.size_hint = (1, None)
         self.pos = (0, 0)
-        self.images = 10  # effectsbar 초기화면에 들어가는 effect 이미지 갯수
         self.update()
 
     def update(self):
         self.clear_widgets()
-        for i in range(self.meta.pos - int(math.floor(self.images/2)),
-                       self.meta.pos + int(math.ceil(self.images/2))):
+        for i in range(self.meta.pos - int(math.floor(len(self.meta.list)/2)),
+                       self.meta.pos + int(math.ceil(len(self.meta.list)/2))):
             image_pos = i
             if image_pos < 0:
                 image_pos = len(self.meta.list) + image_pos
@@ -90,7 +137,7 @@ class EffectsBar(BoxLayout):
                 image_pos = image_pos - len(self.meta.list)
             img = EffectsImage(source=os.path.join(directory, 'Effects',
                                                 self.meta.list[image_pos].image),
-                            image_pos=image_pos,
+                            image_pos=image_pos, 
                             selected=True if image_pos == self.meta.pos else False)
             self.add_widget(img)
 
@@ -104,10 +151,11 @@ class EffectsImage(ButtonBehavior, Image):
         self.image_pos = image_pos
         self.selected = selected
         super().__init__(**kwargs)
-        self.width = 100
+        self.width = 70
         if not self.selected:
             self.opacity = 0.6
         self.size_hint = None, None
+
 
     def on_press(self):
         if not self.selected:
