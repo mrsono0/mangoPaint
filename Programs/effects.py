@@ -9,8 +9,10 @@
 import os
 import sys
 import math
+import collections
 from subprocess import Popen, PIPE, STDOUT
 from box import Box
+
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
@@ -49,9 +51,10 @@ class Effects(Screen):
     def _get_effects(self):
         self.config.read(os.path.join(directory, 'Libs/mangopaint.ini'))        
         _items = self.config.items('Effects')
-        for i, (key, _item) in enumerate(_items):
+        
+        for key, _item in _items:
             img_sh = _item.split(',')
-            _data = {'key': key, 'image': img_sh[0], 'pgm': img_sh[1], 'order': img_sh[2] }
+            _data = {'key': key, 'image': img_sh[0], 'pgm': img_sh[1], 'order': img_sh[2]}
             self.effects_data.list.append(_data)
         
     # effects.kv 에서 호출하는 effects 화면 생성하기
@@ -75,23 +78,22 @@ class Effects(Screen):
         cmd = []
 
         if _data.key == 'sketch':
-            args = self.sketch_arguments(image_pos)
+            args, output = self.sketch_arguments(image_pos)
         elif _data.key == 'water_color':
-            args = self.sketch_arguments(image_pos)
+            args, output = self.sketch_arguments(image_pos)
         elif _data.key == 'oil_color':
-            args = self.sketch_arguments(image_pos)
+            args, output = self.oil_color_arguments(image_pos)
         else: 
-            args = self.sketch_arguments(image_pos)
+            args, output = self.sketch_arguments(image_pos)
 
         cmd.append(sys.executable or 'python3')
         cmd.append(args)
         print(cmd[0] + cmd[1])
         process = Popen(cmd[0] + cmd[1], shell=True, stdout=PIPE, stderr=STDOUT)
         out, err = process.communicate()
-        errcode = process.returncode
 
-        # self.image.source = self.image.gen_image()
-        # self.image.reload()
+        self.ids.myimage.source = output
+        # return self
 
     def choice_effect(self):
         pass
@@ -102,13 +104,35 @@ class Effects(Screen):
     def save_temp(self):
         pass
 
+    # 흑백 스케치 느낌 (아직은 칼라네요....)
     def sketch_arguments(self, image_pos):
         # python3 edge_detecting.py --content=$1 --output=$2 --blurred=$3
-        # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "mosaic_edge_result.png" --blurred 3
-        args = " {} --content {} --blurred {}".format(self.effects_data.list[image_pos].pgm, self.ids.myimage.source, '3')
-        return args
+        # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_edge_result.png" --blurred 3
+        _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
+        output = os.path.join(directory, 'Data', 'temp.png')
+        args = " {} --content {} --output {} --blurred {}".format(_pgm, self.ids.myimage.source, output, 3)
+        return args, output
 
-        
+    # 유화 느낌
+    def oil_color_arguments(self, image_pos):
+        # python oil_painting.py --content=$1 --output=$2 --radius=$3 --intensity=$4
+        # python3 oil_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_oil_result.png" --radius 5 --intensity 20
+        _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
+        output = os.path.join(directory, 'Data', 'temp.png')
+        args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.ids.myimage.source, output, 5, 20)
+        return args, output
+
+    # 수채화 느낌
+    def water_color_arguments(self, image_pos):
+        # python3 Water_coloring.py --content=$1 --output=$2
+        # python3 water_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_water_result.png"
+        _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
+        output = os.path.join(directory, 'Data', 'temp.png')
+        args = " {} --content {} --output {}".format(_pgm, self.ids.myimage.source, output)
+        return args, output
+
+
+
     # def gen_image(self):
     #     return os.path.join(directory, 'Effects',
     #                         self.meta.list[image_pos].image)
