@@ -42,16 +42,11 @@ class Effects(Screen):
         self.pos = (0,0)
         self.size_hint = (1,1)
         self.config = ConfigParser()
-        self.effects_data = Box()
-        self.effects_data.pos = 0
-        self.effects_data.list = []
-
 
     # effect 효과의 타이틀명, 샘플이지미파일, 효과 프로그램명 정보 읽어오기  
     def _get_effects(self):
         self.config.read(os.path.join(directory, 'Libs/mangopaint.ini'))        
         _items = self.config.items('Effects')
-        
         for key, _item in _items:
             img_sh = _item.split(',')
             _data = {'key': key, 'image': img_sh[0], 'pgm': img_sh[1], 'order': img_sh[2]}
@@ -59,6 +54,9 @@ class Effects(Screen):
         
     # effects.kv 에서 호출하는 effects 화면 생성하기
     def create_effects(self, selectedImagePath):
+        self.effects_data = Box()
+        self.effects_data.pos = 0
+        self.effects_data.list = []
         self._get_effects()
         self.effects_data.list.sort(key=lambda x: x['order'], reverse=True)
         self.effectsbar = EffectsBar(meta=self.effects_data)
@@ -80,7 +78,7 @@ class Effects(Screen):
         if _data.key == 'sketch':
             args, output = self.sketch_arguments(image_pos)
         elif _data.key == 'water_color':
-            args, output = self.sketch_arguments(image_pos)
+            args, output = self.water_color_arguments(image_pos)
         elif _data.key == 'oil_color':
             args, output = self.oil_color_arguments(image_pos)
         else: 
@@ -91,18 +89,10 @@ class Effects(Screen):
         print(cmd[0] + cmd[1])
         process = Popen(cmd[0] + cmd[1], shell=True, stdout=PIPE, stderr=STDOUT)
         out, err = process.communicate()
-
         self.ids.myimage.source = output
-        # return self
+        # self.update_effectsbar()
+        print('effect function end: ' + _data.key + ' <==================')
 
-    def choice_effect(self):
-        pass
-
-    def run_effect(self):
-        pass
-
-    def save_temp(self):
-        pass
 
     # 흑백 스케치 느낌 (아직은 칼라네요....)
     def sketch_arguments(self, image_pos):
@@ -113,6 +103,7 @@ class Effects(Screen):
         args = " {} --content {} --output {} --blurred {}".format(_pgm, self.ids.myimage.source, output, 3)
         return args, output
 
+
     # 유화 느낌
     def oil_color_arguments(self, image_pos):
         # python oil_painting.py --content=$1 --output=$2 --radius=$3 --intensity=$4
@@ -121,6 +112,7 @@ class Effects(Screen):
         output = os.path.join(directory, 'Data', 'temp.png')
         args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.ids.myimage.source, output, 5, 20)
         return args, output
+
 
     # 수채화 느낌
     def water_color_arguments(self, image_pos):
@@ -132,6 +124,10 @@ class Effects(Screen):
         return args, output
 
 
+    # effects 화면에서 다시 갤러리 화면으로 돌아갈때.
+    def remove_effects_widgets(self):
+        print('destroyed')
+        self.effects_data.clear()
 
     # def gen_image(self):
     #     return os.path.join(directory, 'Effects',
@@ -180,7 +176,6 @@ class EffectsImage(ButtonBehavior, Image):
             self.opacity = 0.6
         self.size_hint = None, None
 
-
     def on_press(self):
         if not self.selected:
             self.parent.parent.change_to_image(self.image_pos)
@@ -192,7 +187,6 @@ class EffectsImage(ButtonBehavior, Image):
     def on_exit(self):
         if not self.selected:
             self.opacity = 0.6
-
 
 
 # 파일탐색기로는 이미지이외의 것들이 보여져서 그닥임. 이미지만 보이는 앨범으로 만들어져야함. 지금은 사용안함.
