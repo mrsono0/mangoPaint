@@ -31,17 +31,20 @@ from Libs.hover import MouseOver
 
 directory = os.path.split(os.path.abspath(sys.argv[0]))[0]
 
+
 # Effects 초기 화면 클래스
 class Effects(Screen):
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
     title_previous = StringProperty('')  # 액션바
+    global_selectedImagePath = ''
 
     def __init__(self, **kwargs):
         super(Effects, self).__init__(**kwargs)
         self.pos = (0,0)
         self.size_hint = (1,1)
         self.config = ConfigParser()
+
 
     # effect 효과의 타이틀명, 샘플이지미파일, 효과 프로그램명 정보 읽어오기  
     def _get_effects(self):
@@ -58,9 +61,10 @@ class Effects(Screen):
         self.effects_data.pos = 0
         self.effects_data.list = []
         self._get_effects()
-        self.effects_data.list.sort(key=lambda x: x['order'], reverse=True)
+        self.effects_data.list.sort(key=lambda x: x['order'])
         self.effectsbar = EffectsBar(meta=self.effects_data)
-        self.ids.myimage.source = selectedImagePath
+        self.global_selectedImagePath = selectedImagePath
+        self.ids.myimage.source = self.global_selectedImagePath
         self.add_widget(self.effectsbar, index=0)
 
     # effectsbar 화면 랜더링
@@ -70,8 +74,8 @@ class Effects(Screen):
     # ###########################################
     # effect 효과를 적용하도록 화면 변경하가
     # ###########################################
-    def change_to_image(self, image_pos):
-        # self.image_data.pos = image_pos
+    def transform_to_image(self, image_pos):
+        self.effects_data.pos = image_pos
         _data = self.effects_data.list[image_pos]
         cmd = []
 
@@ -100,7 +104,7 @@ class Effects(Screen):
         # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_edge_result.png" --blurred 3
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {} --blurred {}".format(_pgm, self.ids.myimage.source, output, 3)
+        args = " {} --content {} --output {} --blurred {}".format(_pgm, self.global_selectedImagePath, output, 3)
         return args, output
 
 
@@ -110,7 +114,7 @@ class Effects(Screen):
         # python3 oil_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_oil_result.png" --radius 5 --intensity 20
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.ids.myimage.source, output, 5, 20)
+        args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.global_selectedImagePath, output, 5, 20)
         return args, output
 
 
@@ -120,7 +124,7 @@ class Effects(Screen):
         # python3 water_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_water_result.png"
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {}".format(_pgm, self.ids.myimage.source, output)
+        args = " {} --content {} --output {}".format(_pgm, self.global_selectedImagePath, output)
         return args, output
 
 
@@ -148,18 +152,28 @@ class EffectsBar(BoxLayout):
 
     def update(self):
         self.clear_widgets()
-        for i in range(self.meta.pos - int(math.floor(len(self.meta.list)/2)),
-                       self.meta.pos + int(math.ceil(len(self.meta.list)/2))):
+        for i in range(len(self.meta.list)):
             image_pos = i
-            if image_pos < 0:
-                image_pos = len(self.meta.list) + image_pos
-            if image_pos >= len(self.meta.list):
-                image_pos = image_pos - len(self.meta.list)
             img = EffectsImage(source=os.path.join(directory, 'Effects',
                                                 self.meta.list[image_pos].image),
-                            image_pos=image_pos, 
-                            selected=True if image_pos == self.meta.pos else False)
+                    image_pos=image_pos, 
+                    selected=True if image_pos == self.meta.pos else False)
             self.add_widget(img)
+
+    # def update(self):
+    #     self.clear_widgets()
+    #     for i in range(self.meta.pos - int(math.floor(len(self.meta.list)/2)),
+    #                    self.meta.pos + int(math.ceil(len(self.meta.list)/2))):
+    #         image_pos = i
+    #         if image_pos < 0:
+    #             image_pos = len(self.meta.list) + image_pos
+    #         if image_pos >= len(self.meta.list):
+    #             image_pos = image_pos - len(self.meta.list)
+    #         img = EffectsImage(source=os.path.join(directory, 'Effects',
+    #                                             self.meta.list[image_pos].image),
+    #                         image_pos=image_pos, 
+    #                         selected=True if image_pos == self.meta.pos else False)
+    #         self.add_widget(img)
 
 
 # effectsbar 에 들어가는 effects들의 이미지버튼들 클래스
@@ -177,8 +191,10 @@ class EffectsImage(ButtonBehavior, Image):
         self.size_hint = None, None
 
     def on_press(self):
-        if not self.selected:
-            self.parent.parent.change_to_image(self.image_pos)
+        if not self.selected:  # selected 된 상태라면 pass 하기위함
+            # image_pos : effects images 중 선택된 이미지효과의 순번 위치
+            self.parent.parent.transform_to_image(self.image_pos)
+            
 
     def on_hover(self):
         if not self.selected:
