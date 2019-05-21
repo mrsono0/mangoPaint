@@ -32,8 +32,8 @@ class Gallery(Screen):
     def create_scrollview(self, dt):
         images = []
         for ext in ('*.gif', '*.png', '*.jpg', '*.jpeg'):
-            images.extend(sorted(glob.glob(os.path.join('/Users/jarvis/Pictures', ext)), key=os.path.getmtime))
-            # images.extend(sorted(glob.glob(os.path.join('/home/ubuntu/Pictures', ext)), key=os.path.getmtime))            
+            # images.extend(sorted(glob.glob(os.path.join('/Users/jarvis/Pictures', ext)), key=os.path.getmtime))
+            images.extend(sorted(glob.glob(os.path.join('/home/ubuntu/Pictures', ext)), key=os.path.getmtime))            
         layout = GridLayout(
             cols=3,
             row_force_default=True,

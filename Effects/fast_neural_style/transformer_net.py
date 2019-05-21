@@ -1,7 +1,13 @@
 
 # coding: utf-8
 
+# In[1]:
+
+
 import torch
+
+
+# In[2]:
 
 
 class TransformerNet(torch.nn.Module):
@@ -100,3 +106,4 @@ class UpsampleConvLayer(torch.nn.Module):
         out = self.reflection_pad(x_in)
         out = self.conv2d(out)
         return out
+

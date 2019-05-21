@@ -39,6 +39,7 @@ image = cv2.imread(filename=args.content, flags=cv2.IMREAD_GRAYSCALE)
 
 # set up display window with trackbars for minimum and maximum threshold
 # values
+# 추후에 미세값 조정하기 위한 부분으로 현재는 미완료부분임.
 cv2.namedWindow(winname = "edges", flags = cv2.WINDOW_NORMAL)
 
 minT = 30

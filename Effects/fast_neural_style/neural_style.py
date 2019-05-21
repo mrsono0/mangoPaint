@@ -14,7 +14,7 @@ import torch.onnx
 
 import utils
 from transformer_net import TransformerNet
-from vgg import Vgg16
+# from vgg import Vgg16
 
 
 def check_paths(args):

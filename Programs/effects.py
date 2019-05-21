@@ -61,7 +61,7 @@ class Effects(Screen):
         self.effects_data.pos = 0
         self.effects_data.list = []
         self._get_effects()
-        self.effects_data.list.sort(key=lambda x: x['order'])
+        self.effects_data.list.sort(key=lambda x: int(x['order']))
         self.effectsbar = EffectsBar(meta=self.effects_data)
         self.global_selectedImagePath = selectedImagePath
         self.ids.myimage.source = self.global_selectedImagePath
@@ -79,14 +79,19 @@ class Effects(Screen):
         _data = self.effects_data.list[image_pos]
         cmd = []
 
-        if _data.key == 'sketch':
-            args, output = self.sketch_arguments(image_pos)
+        # if 조건이 exclusive 하지 않아 혹 조건을 빠져나갈수 있는 위험이 있으니 주의할것!
+        # 우선 뉴럴스타일이면, 다음으로 특정스타일을 물어보는 식이라...
+        if _data.pgm == 'neural_style.py':
+            args, output = self.neural_style_arguments(image_pos, _data.key)
+
+        elif _data.key == 'edge_detect':
+            args, output = self.edge_detect_arguments(image_pos)
         elif _data.key == 'water_color':
             args, output = self.water_color_arguments(image_pos)
         elif _data.key == 'oil_color':
             args, output = self.oil_color_arguments(image_pos)
         else: 
-            args, output = self.sketch_arguments(image_pos)
+            args, output = self.edge_detect_arguments(image_pos)
 
         cmd.append(sys.executable or 'python3')
         cmd.append(args)
@@ -99,8 +104,21 @@ class Effects(Screen):
 
 
 
+
+
+    # 뉴럴스타일 방식의 패턴은 아래 함수로 집중
+    def neural_style_arguments(self, image_pos, key):
+        # python3 ./fast_neural_style/neural_style.py eval --content-image ../../../images/Colorful-Paint-with-Paper-Texture.jpg --model ./fast_neural_style/saved_models/mosaic.model --output-image ../Data/temp.png --cuda 0
+        _pgm = os.path.join(directory, 'Effects/fast_neural_style', self.effects_data.list[image_pos].pgm)
+        output = os.path.join(directory, 'Data', 'temp.png')
+        _cuda = 1
+        _model = os.path.join(directory, 'Effects/fast_neural_style/saved_models', key + '.model')
+        args = " {} eval --content-image {} --model {} --output-image {} --cuda {}".format(_pgm, self.global_selectedImagePath, _model, output, _cuda)
+        return args, output
+
+
     # 흑백 스케치 느낌 (아직은 칼라네요....)
-    def sketch_arguments(self, image_pos):
+    def edge_detect_arguments(self, image_pos):
         # python3 edge_detecting.py --content=$1 --output=$2 --blurred=$3
         # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_edge_result.png" --blurred 3
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
@@ -129,6 +147,7 @@ class Effects(Screen):
         return args, output
 
 
+
     # effects 화면에서 다시 갤러리 화면으로 돌아갈때.
     def remove_effects_widgets(self):
         print('destroyed')
@@ -155,7 +174,11 @@ class EffectsBar(BoxLayout):
         self.clear_widgets()
         for i in range(len(self.meta.list)):
             image_pos = i
-            img = EffectsImage(source=os.path.join(directory, 'Effects',
+            if self.meta.list[image_pos].pgm == 'neural_style.py':
+                _path = 'Effects/fast_neural_style/saved_models'
+            else:
+                _path = 'Effects'
+            img = EffectsImage(source=os.path.join(directory, _path,
                                                 self.meta.list[image_pos].image),
                     image_pos=image_pos)
             self.add_widget(img)
