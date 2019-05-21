@@ -68,8 +68,8 @@ class Effects(Screen):
         self.add_widget(self.effectsbar, index=0)
 
     # effectsbar 화면 랜더링
-    def update_effectsbar(self):
-        self.effectsbar.update()
+    # def update_effectsbar(self):
+    #     self.effectsbar.update()
 
     # ###########################################
     # effect 효과를 적용하도록 화면 변경하가
@@ -94,8 +94,9 @@ class Effects(Screen):
         process = Popen(cmd[0] + cmd[1], shell=True, stdout=PIPE, stderr=STDOUT)
         out, err = process.communicate()
         self.ids.myimage.source = output
-        # self.update_effectsbar()
         print('effect function end: ' + _data.key + ' <==================')
+        self.ids.myimage.reload()
+
 
 
     # 흑백 스케치 느낌 (아직은 칼라네요....)
@@ -156,24 +157,8 @@ class EffectsBar(BoxLayout):
             image_pos = i
             img = EffectsImage(source=os.path.join(directory, 'Effects',
                                                 self.meta.list[image_pos].image),
-                    image_pos=image_pos, 
-                    selected=True if image_pos == self.meta.pos else False)
+                    image_pos=image_pos)
             self.add_widget(img)
-
-    # def update(self):
-    #     self.clear_widgets()
-    #     for i in range(self.meta.pos - int(math.floor(len(self.meta.list)/2)),
-    #                    self.meta.pos + int(math.ceil(len(self.meta.list)/2))):
-    #         image_pos = i
-    #         if image_pos < 0:
-    #             image_pos = len(self.meta.list) + image_pos
-    #         if image_pos >= len(self.meta.list):
-    #             image_pos = image_pos - len(self.meta.list)
-    #         img = EffectsImage(source=os.path.join(directory, 'Effects',
-    #                                             self.meta.list[image_pos].image),
-    #                         image_pos=image_pos, 
-    #                         selected=True if image_pos == self.meta.pos else False)
-    #         self.add_widget(img)
 
 
 # effectsbar 에 들어가는 effects들의 이미지버튼들 클래스
@@ -181,28 +166,25 @@ class EffectsImage(ButtonBehavior, Image):
     """ effectsbar images. The current one will always have full opacity, 
         otherwise only ones being hovered over will be full opacity. """
 
-    def __init__(self, image_pos=0, selected=False, **kwargs):
+    def __init__(self, image_pos=0, **kwargs):
         self.image_pos = image_pos
-        self.selected = selected
         super().__init__(**kwargs)
+        # self.opacity = 0.6
         self.width = 70
-        if not self.selected:
-            self.opacity = 0.6
         self.size_hint = None, None
 
     def on_press(self):
-        if not self.selected:  # selected 된 상태라면 pass 하기위함
             # image_pos : effects images 중 선택된 이미지효과의 순번 위치
-            self.parent.parent.transform_to_image(self.image_pos)
+        self.parent.parent.transform_to_image(self.image_pos)
             
 
     def on_hover(self):
-        if not self.selected:
-            self.opacity = 1.0
+        pass
+        # self.opacity = 1.0
 
     def on_exit(self):
-        if not self.selected:
-            self.opacity = 0.6
+        pass
+        # self.opacity = 0.6
 
 
 # 파일탐색기로는 이미지이외의 것들이 보여져서 그닥임. 이미지만 보이는 앨범으로 만들어져야함. 지금은 사용안함.

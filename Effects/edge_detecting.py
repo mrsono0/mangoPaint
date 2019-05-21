@@ -2,9 +2,7 @@
 # python3.5.3
 # edge_detecting.py
 
-
 import cv2
-import matplotlib.pyplot as plt
 
 from skimage import data, segmentation
 from argparse import ArgumentParser
@@ -16,20 +14,48 @@ parser.add_argument('--output', type=str)
 parser.add_argument('--blurred', type=int)
 args = parser.parse_args()
 
+global image, minT, maxT
 
-def read_image(content, blurred=7):
-    img_origin = data.imread(content)
-    img = cv2.medianBlur(img_origin, blurred)
-    return img
+#  Callback function for minimum threshold trackbar.
+def adjustMinT(v):
+    global minT
+    minT = v
+    cannyEdge()
+
+# Callback function for maximum threshold trackbar.
+def adjustMaxT(v):
+    global maxT
+    maxT = v
+    cannyEdge()
 
 
-def edge_detecting(image):
-    fig, ax = plt.subplots(1, 1, figsize=(50, 100), sharex=True, sharey=True)
-    edges = cv2.Canny(image, 70, 200, apertureSize=3)
-    ax.imshow(segmentation.mark_boundaries(img, edges, (0, 0, 0)))
-    fig.savefig(args.output)
+###################################
+#  Main program begins here. 
+###################################
 
 
-if __name__ == '__main__':
-    img = read_image(args.content, args.blurred)
-    edge_detecting(img)
+# load original image as grayscale
+image = cv2.imread(filename=args.content, flags=cv2.IMREAD_GRAYSCALE)
+
+# set up display window with trackbars for minimum and maximum threshold
+# values
+cv2.namedWindow(winname = "edges", flags = cv2.WINDOW_NORMAL)
+
+minT = 30
+maxT = 150
+
+# cv2.createTrackbar() does not support named parameters
+cv2.createTrackbar("minT", "edges", minT, 255, adjustMinT)
+cv2.createTrackbar("maxT", "edges", maxT, 255, adjustMaxT)
+
+# Smoothing without removing edges.
+gray_filtered = cv2.bilateralFilter(image, 7, 50, 50)
+
+# minT, maxT 값을 밖으로 빼내서 조정값으로 변경해야함. 추후
+edge = cv2.Canny(image=gray_filtered, threshold1=minT, threshold2=maxT)
+
+# subtract 방식이 색상 미세조정이 가능해서 더 성능이 좋아보여, bitwise 를 대기로 함.
+# edge = cv2.bitwise_not(edge)
+edge = cv2.subtract(250, edge)
+
+cv2.imwrite(args.output, edge)
