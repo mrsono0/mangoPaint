@@ -15,6 +15,7 @@ from box import Box
 
 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
@@ -172,6 +173,15 @@ class EffectsBar(BoxLayout):
 
     def update(self):
         self.clear_widgets()
+        layout = GridLayout(
+            rows=1,
+            row_force_default=True,
+            row_default_height=90,
+            size_hint_y=None,
+            spacing=5,
+            padding=5,
+        )
+        layout.bind(minimum_width=layout.setter("width"))
         for i in range(len(self.meta.list)):
             image_pos = i
             if self.meta.list[image_pos].pgm == 'neural_style.py':
@@ -181,7 +191,18 @@ class EffectsBar(BoxLayout):
             img = EffectsImage(source=os.path.join(directory, _path,
                                                 self.meta.list[image_pos].image),
                     image_pos=image_pos)
-            self.add_widget(img)
+            layout.add_widget(img)
+
+        scrollview = ScrollView(
+            size_hint=(None, 1),
+            size=(self.width, self.height),
+            do_scroll_y=False,
+        )
+        scrollview.add_widget(layout)
+        # self.id.view.add_widget(scrollview)
+        # self.add_widget(scrollview)
+
+
 
 
 # effectsbar 에 들어가는 effects들의 이미지버튼들 클래스

@@ -1,7 +1,7 @@
 #:kivy 1.10.1
 
 <Effects>:
-    # view: view
+    view: view
     name: 'effects'
     on_pre_enter: self.create_effects(self.parent.get_screen('gallery').selectedImagePath)
     on_leave: self.remove_effects_widgets()
@@ -9,7 +9,7 @@
     Image:
         id: myimage
         source: ''
-        allow_stretch: True        
+        allow_stretch: True     
 
     BoxLayout:
         orientation: 'horizontal'
