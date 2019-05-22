@@ -6,13 +6,13 @@ class MyStudio(Screen):
     pass
 
 
-class Painting(object):
+class Paint(object):
     pass
 
 
-class Segmenting(object):
+class Segment(object):
     pass
 
 
-class Drawing(object):
+class Draw(object):
     pass

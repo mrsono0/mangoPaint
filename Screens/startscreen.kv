@@ -6,6 +6,7 @@
 #:import Gallery Programs.gallery.Gallery
 #:import Effects Programs.effects.Effects
 #:import MyStudio Programs.mystudio.MyStudio
+#:import Segment Programs.segment.Segment
 #:import Community Programs.community.Community
 #:import Purchase Programs.purchase.Purchase
 #:import License Programs.license.License
@@ -34,6 +35,10 @@
                 id: root_manager
                 transition: NoTransition()
 
+
+                # ################################################################
+                # Gallery (1 레벨) 에서 gallery(default), effects 의 2레벨로 세분화 됨.
+                # ################################################################
                 Gallery:  # 썸네일  # 초기 화면, 첫번째 순서로 놓으면 current 가 됨.
                     id: gallery
                     # on_enter: self._on_enter(mdtool_bar, app)
@@ -46,16 +51,37 @@
                     # on_leave: 
                     #    mdtool_bar.title = app.title; mdtool_bar.left_action_items = []                 
 
-                MyStudio:  # 내작업공간
+
+                # ################################################################
+                # MyStudio (1 래밸) 예써 segment(default), paint, draw 의 2레벨로 세분화 됨.
+                # ################################################################
+                MyStudio:  # 내작업공간: 이 화면에서 segment 를 하고, paint와 draw 로 가는 버튼있음.
                     id: mystudio
                     # on_enter: self._on_enter(mdtool_bar, app)
                     #on_leave: mdtool_bar.title = app.sets.string_lang_create_account                    
 
+                Segment:  # 조각 내기
+                    id: segment
+                    selectedImagePath: gallery.selectedImagePath                    
+                # Paint:  # 색칠 하기
+                #     id: effects
+
+                # Draw:  # 스케치 하기
+                #     id: effects
+
+
+                # ################################################################
+                # 
+                # ################################################################
                 Community:  # 회원들 작업공간
                     id: community
                     # on_enter: self._on_enter(mdtool_bar, app)
                     #on_leave:                    
 
+
+                # ################################################################
+                # 
+                # ################################################################
                 Purchase:  # 구매신청
                     id: purchase
                     # on_enter: self._on_enter(mdtool_bar, app)

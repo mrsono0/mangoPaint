@@ -38,7 +38,7 @@ class Effects(Screen):
     events_callback = ObjectProperty(None)
     sets = ObjectProperty(None)
     title_previous = StringProperty('')  # 액션바
-    global_selectedImagePath = ''
+    selectedImagePath = StringProperty('')
 
     def __init__(self, **kwargs):
         super(Effects, self).__init__(**kwargs)
@@ -57,16 +57,18 @@ class Effects(Screen):
             self.effects_data.list.append(_data)
         
     # effects.kv 에서 호출하는 effects 화면 생성하기
-    def create_effects(self, selectedImagePath):
+    def create_effects_screen(self, imagePath):
         self.effects_data = Box()
         self.effects_data.pos = 0
         self.effects_data.list = []
         self._get_effects()
         self.effects_data.list.sort(key=lambda x: int(x['order']))
         self.effectsbar = EffectsBar(meta=self.effects_data)
-        self.global_selectedImagePath = selectedImagePath
-        self.ids.myimage.source = self.global_selectedImagePath
+        self.selectedImagePath = imagePath
+        self.ids.myimage.source = self.selectedImagePath
+        # self.container.add_widget(self.effectsbar.ret_scrollview)
         self.add_widget(self.effectsbar, index=0)
+
 
     # effectsbar 화면 랜더링
     # def update_effectsbar(self):
@@ -114,7 +116,7 @@ class Effects(Screen):
         output = os.path.join(directory, 'Data', 'temp.png')
         _cuda = 1
         _model = os.path.join(directory, 'Effects/fast_neural_style/saved_models', key + '.model')
-        args = " {} eval --content-image {} --model {} --output-image {} --cuda {}".format(_pgm, self.global_selectedImagePath, _model, output, _cuda)
+        args = " {} eval --content-image {} --model {} --output-image {} --cuda {}".format(_pgm, self.selectedImagePath, _model, output, _cuda)
         return args, output
 
 
@@ -124,7 +126,7 @@ class Effects(Screen):
         # python3 edge_detecting.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_edge_result.png" --blurred 3
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {} --blurred {}".format(_pgm, self.global_selectedImagePath, output, 3)
+        args = " {} --content {} --output {} --blurred {}".format(_pgm, self.selectedImagePath, output, 3)
         return args, output
 
 
@@ -134,7 +136,7 @@ class Effects(Screen):
         # python3 oil_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_oil_result.png" --radius 5 --intensity 20
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.global_selectedImagePath, output, 5, 20)
+        args = " {} --content {} --output {} --radius {}  --intensity {}".format(_pgm, self.selectedImagePath, output, 5, 20)
         return args, output
 
 
@@ -144,7 +146,7 @@ class Effects(Screen):
         # python3 water_coloring.py --content "../../../images/mosaic.jpg" --output "../Data/mosaic_water_result.png"
         _pgm = os.path.join(directory, 'Effects', self.effects_data.list[image_pos].pgm)
         output = os.path.join(directory, 'Data', 'temp.png')
-        args = " {} --content {} --output {}".format(_pgm, self.global_selectedImagePath, output)
+        args = " {} --content {} --output {}".format(_pgm, self.selectedImagePath, output)
         return args, output
 
 
@@ -169,19 +171,21 @@ class EffectsBar(BoxLayout):
         self.height = 70
         self.size_hint = (1, None)
         self.pos = (0, 0)
+        self.ret_scrollview = ObjectProperty(None)
+
         self.update()
 
     def update(self):
         self.clear_widgets()
-        layout = GridLayout(
-            rows=1,
-            row_force_default=True,
-            row_default_height=90,
-            size_hint_y=None,
-            spacing=5,
-            padding=5,
-        )
-        layout.bind(minimum_width=layout.setter("width"))
+        # layout = GridLayout(
+        #     rows=1,
+        #     row_force_default=True,
+        #     row_default_height=90,
+        #     size_hint_y=None,
+        #     spacing=5,
+        #     padding=5,
+        # )
+        # layout.bind(minimum_height=layout.setter("height"))
         for i in range(len(self.meta.list)):
             image_pos = i
             if self.meta.list[image_pos].pgm == 'neural_style.py':
@@ -190,17 +194,18 @@ class EffectsBar(BoxLayout):
                 _path = 'Effects'
             img = EffectsImage(source=os.path.join(directory, _path,
                                                 self.meta.list[image_pos].image),
+                                                # size=self.size,
                     image_pos=image_pos)
-            layout.add_widget(img)
+            self.add_widget(img)
+        #     layout.add_widget(img)
 
-        scrollview = ScrollView(
-            size_hint=(None, 1),
-            size=(self.width, self.height),
-            do_scroll_y=False,
-        )
-        scrollview.add_widget(layout)
-        # self.id.view.add_widget(scrollview)
-        # self.add_widget(scrollview)
+        # scrollview = ScrollView(
+        #     size_hint=(None, 1),
+        #     size=(self.width, self.height),
+        #     do_scroll_y=False,
+        # )
+        # scrollview.add_widget(layout)
+        # self.ret_scrollview = scrollview
 
 
 

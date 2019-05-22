@@ -1,9 +1,10 @@
 #:kivy 1.10.1
 
 <Effects>:
-    view: view
+    container: container
+    id: effects
     name: 'effects'
-    on_pre_enter: self.create_effects(self.parent.get_screen('gallery').selectedImagePath)
+    on_pre_enter: self.create_effects_screen(self.parent.get_screen('gallery').selectedImagePath)
     on_leave: self.remove_effects_widgets()
 
     Image:
@@ -12,7 +13,8 @@
         allow_stretch: True     
 
     BoxLayout:
+        id: myboxlayout
         orientation: 'horizontal'
         ScrollView:  # MDRectangleFlatButton 으로 필터들 스크롤
             do_scroll_y: False
-            id: view
+            id: container

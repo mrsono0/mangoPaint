@@ -59,7 +59,7 @@ class Gallery(Screen):
             do_scroll_x=False,
         )
         scrollview.add_widget(layout)
-        self.view.add_widget(scrollview)
+        self.container.add_widget(scrollview)
 
 
     def callback(self, obj):
